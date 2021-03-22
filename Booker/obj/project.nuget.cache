@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "g5i8KGEsEj7kpF2DbuhjbuwDNt/931LMmEyxhYzpjkIU7WDB6WtH/q4Mxrr243NB/Nan0Avg1jj8URJrwcNsSg==",
+  "dgSpecHash": "aCz+D3ZeXArY5R6zakpABastjR9y6vaaFE4axaF2rTlO3/+rIGhg9o4savzXBaGGPVKYlH7VXlfsRXYhG7xH+Q==",
   "success": true,
-  "projectFilePath": "C:\\xampp\\htdocs\\Booker\\DemoASPCRUD\\Booker.csproj",
+  "projectFilePath": "C:\\xampp\\htdocs\\Booker\\Booker\\Booker.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\adrien.paysant\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\adrien.paysant\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
