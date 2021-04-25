@@ -21,12 +21,18 @@ namespace DemoASPCRUD.Migrations
 
             modelBuilder.Entity("DemoASPCRUD.Models.Book", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ISBN")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Author")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BuyLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Categories")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
@@ -35,13 +41,16 @@ namespace DemoASPCRUD.Migrations
                     b.Property<string>("Editor")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ISBN");
 
                     b.ToTable("Book");
                 });
