@@ -23,15 +23,15 @@ namespace DemoASPCRUD.Controllers
         }
 
         // GET: Books/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? isbn)
         {
-            if (id == null)
+            if (isbn == null)
             {
                 return NotFound();
             }
 
             var book = await _context.Book
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.ISBN == isbn);
             if (book == null)
             {
                 return NotFound();
@@ -63,14 +63,14 @@ namespace DemoASPCRUD.Controllers
         }
 
         // GET: Books/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? isbn)
         {
-            if (id == null)
+            if (isbn == null)
             {
                 return NotFound();
             }
 
-            var book = await _context.Book.FindAsync(id);
+            var book = await _context.Book.FindAsync(isbn);
             if (book == null)
             {
                 return NotFound();
@@ -83,9 +83,9 @@ namespace DemoASPCRUD.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Author,Editor,Description,ReleaseDate,Description")] Book book)
+        public async Task<IActionResult> Edit(int isbn, [Bind("Id,Title,Author,Editor,Description,ReleaseDate,Description")] Book book)
         {
-            if (id != book.Id)
+            if (isbn != book.ISBN)
             {
                 return NotFound();
             }
@@ -99,7 +99,7 @@ namespace DemoASPCRUD.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookExists(book.Id))
+                    if (!BookExists(book.ISBN))
                     {
                         return NotFound();
                     }
@@ -114,15 +114,15 @@ namespace DemoASPCRUD.Controllers
         }
 
         // GET: Books/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? isbn)
         {
-            if (id == null)
+            if (isbn == null)
             {
                 return NotFound();
             }
 
             var book = await _context.Book
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.ISBN == isbn);
             if (book == null)
             {
                 return NotFound();
@@ -134,17 +134,17 @@ namespace DemoASPCRUD.Controllers
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int isbn)
         {
-            var book = await _context.Book.FindAsync(id);
+            var book = await _context.Book.FindAsync(isbn);
             _context.Book.Remove(book);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BookExists(int id)
+        private bool BookExists(int isbn)
         {
-            return _context.Book.Any(e => e.Id == id);
+            return _context.Book.Any(e => e.ISBN == isbn);
         }
     }
 }
