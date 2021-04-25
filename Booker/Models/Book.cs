@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DemoASPCRUD.Models
+namespace Booker.Models
 {
     public class Book
     {
@@ -20,15 +20,5 @@ namespace DemoASPCRUD.Models
         public string Categories{ get; set; }
         public string BuyLink{ get; set; }
       
-    }
-
-    public class User 
-    {
-        public int Id{ get; set; }
-        public string Name { get; set; }
-        public string Email{ get; set; }
-        public string password { get; set; }
-        public string Avatar{ get; set; }
-        public string Type{ get; set; }
     }
 }

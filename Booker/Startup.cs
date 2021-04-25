@@ -1,12 +1,17 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DemoASPCRUD.Data;
+using Booker.Data;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace DemoASPCRUD
+namespace Booker
 {
     public class Startup
     {
@@ -21,14 +26,14 @@ namespace DemoASPCRUD
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<MvcBookContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("MvcBookContext")));
+            services.AddDbContext<BookerContext>(options =>
+                        options.UseSqlServer(Configuration.GetConnectionString("BookerDB")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app,IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if(env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

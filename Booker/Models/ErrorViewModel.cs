@@ -1,6 +1,6 @@
 using System;
 
-namespace DemoASPCRUD.Models
+namespace Booker.Models
 {
     public class ErrorViewModel
     {
