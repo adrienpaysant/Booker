@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -89,7 +90,7 @@ namespace Booker.Controllers
                 string uniqueFileName = UploadedFile(vm);
                 book = new Book
                 {
-                    Author = vm.Author,
+                    BookerUser = _context.Users.Find(User.Identity.Name),
                     ISBN = vm.ISBN,
                     BuyLink = vm.BuyLink,
                     Categories = vm.Categories,
@@ -142,7 +143,7 @@ namespace Booker.Controllers
                     string uniqueFileName = UploadedFile(vm);
                     book = new Book
                     {
-                        Author = vm.Author,
+                        BookerUser = _context.Users.Find(User.Identity.Name),
                         ISBN = vm.ISBN,
                         BuyLink = vm.BuyLink,
                         Categories = vm.Categories,
