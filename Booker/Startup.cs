@@ -8,6 +8,14 @@ using Booker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Booker.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authentication;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace Booker
 {
@@ -28,6 +36,13 @@ namespace Booker
                         options.UseSqlServer(Configuration.GetConnectionString("BookerDB")));*/
             //  services.AddDefaultIdentity<User>().AddRoles<IdentityRole>().AddEntityFrameworkStores<BookerContext>();
             services.AddRazorPages();
+            services.AddAuthentication()
+            .AddGoogle(opts =>
+            {
+                opts.ClientId = "348954018086-2dr09kv743l0fc7hagt8qvtbmto101i0.apps.googleusercontent.com";
+                opts.ClientSecret = "rYmFFslGlDJinExGyA7R9m2m";
+                opts.SignInScheme = IdentityConstants.ExternalScheme;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

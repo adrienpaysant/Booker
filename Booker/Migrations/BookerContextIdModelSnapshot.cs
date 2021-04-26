@@ -38,8 +38,14 @@ namespace Booker.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("FirstName")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsAuthor")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
@@ -95,6 +101,9 @@ namespace Booker.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("BookerUserId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("BuyLink")
                         .HasColumnType("TEXT");
 
@@ -117,6 +126,8 @@ namespace Booker.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ISBN");
+
+                    b.HasIndex("BookerUserId");
 
                     b.ToTable("Book");
                 });
@@ -253,6 +264,13 @@ namespace Booker.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Booker.Models.Book", b =>
+                {
+                    b.HasOne("Booker.Areas.Identity.Data.BookerUser", null)
+                        .WithMany("Books")
+                        .HasForeignKey("BookerUserId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -302,6 +320,11 @@ namespace Booker.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Booker.Areas.Identity.Data.BookerUser", b =>
+                {
+                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

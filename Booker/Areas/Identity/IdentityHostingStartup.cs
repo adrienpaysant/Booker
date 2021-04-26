@@ -20,8 +20,10 @@ namespace Booker.Areas.Identity
                     options.UseSqlite(
                         context.Configuration.GetConnectionString("BookerContextIdConnection")));
 
-                services.AddDefaultIdentity<BookerUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<BookerContextId>();
+                services.AddDefaultIdentity<BookerUser>(options => { options.SignIn.RequireConfirmedAccount = true;
+                   
+                }
+                ).AddEntityFrameworkStores<BookerContextId>();
             });
         }
     }

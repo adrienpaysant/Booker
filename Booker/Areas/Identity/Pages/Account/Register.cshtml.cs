@@ -47,6 +47,13 @@ namespace Booker.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "FristName ")]
+            public string FirstName { get; set; }
+            [Required]
+            [Display(Name = "LastName ")]
+            public string LastName { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -61,6 +68,11 @@ namespace Booker.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Display(Name = "Check if you are an author : ")]
+            public bool IsAuthor { get; set; }
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -75,7 +87,7 @@ namespace Booker.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new BookerUser { UserName = Input.Email, Email = Input.Email };
+                var user = new BookerUser { UserName = Input.Email, Email = Input.Email, IsAuthor = Input.IsAuthor,LastName=Input.LastName, FirstName = Input.FirstName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
