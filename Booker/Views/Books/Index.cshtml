@@ -6,9 +6,14 @@
 
 <h1>List of all Books</h1>
 
-<div class="d-flex">
-    @foreach (var item in Model) {
-        <div class="m-3">
-            <a asp-action="Details" asp-route-id="@item.ISBN"><img src="@item.Image" /><br />@Html.DisplayFor(modelItem => item.Title)</a>
-        </div>
-}</div>
+<div class="d-flex flex-wrap">
+    @foreach(var item in Model)
+    {
+        <figure style="text-align:center">
+            <a asp-action="Details" asp-route-id="@item.ISBN">
+                <img src="/img/@item.Image" />
+                <figcaption class="figure-caption">@Html.DisplayFor(modelItem => item.Title)</figcaption>
+            </a>
+        </figure>
+    }
+</div>
