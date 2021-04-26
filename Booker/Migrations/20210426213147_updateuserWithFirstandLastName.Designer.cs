@@ -3,14 +3,16 @@ using System;
 using Booker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Booker.Migrations
 {
     [DbContext(typeof(BookerContextId))]
-    partial class BookerContextIdModelSnapshot : ModelSnapshot
+    [Migration("20210426213147_updateuserWithFirstandLastName")]
+    partial class updateuserWithFirstandLastName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,9 +103,6 @@ namespace Booker.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("BookerUserId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("BuyLink")
                         .HasColumnType("TEXT");
 
@@ -126,8 +125,6 @@ namespace Booker.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ISBN");
-
-                    b.HasIndex("BookerUserId");
 
                     b.ToTable("Book");
                 });
@@ -264,13 +261,6 @@ namespace Booker.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Booker.Models.Book", b =>
-                {
-                    b.HasOne("Booker.Areas.Identity.Data.BookerUser", null)
-                        .WithMany("Books")
-                        .HasForeignKey("BookerUserId");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -320,11 +310,6 @@ namespace Booker.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Booker.Areas.Identity.Data.BookerUser", b =>
-                {
-                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

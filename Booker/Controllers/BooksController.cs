@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Booker.Data;
 using Booker.Models;
+using Booker.Areas.Identity.Data;
 using Booker.ViewModels;
 using System.Web.Helpers;
 using Microsoft.AspNetCore.Http;
@@ -19,10 +20,12 @@ namespace Booker.Controllers
     public class BooksController: Controller
     {
         private readonly BookerContextId _context;
+        private readonly UserManager<BookerUser> _userManager;
 
-        public BooksController(BookerContextId context)
+        public BooksController(BookerContextId context, UserManager<BookerUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Books
@@ -60,7 +63,7 @@ namespace Booker.Controllers
             string filePath = null;
             if(model.Image != null)
             {
-                filePath = "/img/" + model.ISBN + "." + model.Image.FileName.Split(".").Last();
+                filePath = $"/img/{model.ISBN}.{model.Image.FileName.Split(".").Last()}";
                 using var fileStream = new FileStream("wwwroot" + filePath,FileMode.Create);
                 model.Image.CopyTo(fileStream);
             }
@@ -87,10 +90,9 @@ namespace Booker.Controllers
             Book book = null;
             if(ModelState.IsValid)
             {
-                string uniqueFileName = UploadedFile(vm);
                 book = new Book
                 {
-                    BookerUser = _context.Users.Find(User.Identity.Name),
+                    Author = vm.Author,
                     ISBN = vm.ISBN,
                     BuyLink = vm.BuyLink,
                     Categories = vm.Categories,
@@ -98,7 +100,8 @@ namespace Booker.Controllers
                     Editor = vm.Editor,
                     Title = vm.Title,
                     ReleaseDate = vm.ReleaseDate,
-                    Image = uniqueFileName,
+                    Image = UploadedFile(vm),
+                    BookerUserId = _userManager.GetUserId(User)
                 };
                 _context.Add(book);
                 await _context.SaveChangesAsync();
@@ -140,10 +143,9 @@ namespace Booker.Controllers
             {
                 try
                 {
-                    string uniqueFileName = UploadedFile(vm);
                     book = new Book
                     {
-                        BookerUser = _context.Users.Find(User.Identity.Name),
+                        Author = vm.Author,
                         ISBN = vm.ISBN,
                         BuyLink = vm.BuyLink,
                         Categories = vm.Categories,
@@ -151,7 +153,8 @@ namespace Booker.Controllers
                         Editor = vm.Editor,
                         Title = vm.Title,
                         ReleaseDate = vm.ReleaseDate,
-                        Image = uniqueFileName,
+                        Image = UploadedFile(vm),
+                        BookerUserId = _userManager.GetUserId(User)
                     };
                     _context.Update(book);
                     await _context.SaveChangesAsync();
@@ -181,7 +184,7 @@ namespace Booker.Controllers
             }
             var book = await _context.Book
                 .FirstOrDefaultAsync(m => m.ISBN == id);
-            
+
             if(book == null)
             {
                 return NotFound();

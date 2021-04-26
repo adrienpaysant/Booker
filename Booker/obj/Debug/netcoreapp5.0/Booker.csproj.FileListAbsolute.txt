@@ -136,7 +136,6 @@ C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\runtimes\win
 C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\runtimes\win-x86\native\e_sqlite3.dll
 C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\Joris\Desktop\3\.NET\Booker\Booker\obj\Debug\netcoreapp5.0\Booker.csprojAssemblyReference.cache
 C:\Users\Joris\Desktop\3\.NET\Booker\Booker\obj\Debug\netcoreapp5.0\Booker.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Joris\Desktop\3\.NET\Booker\Booker\obj\Debug\netcoreapp5.0\Booker.AssemblyInfoInputs.cache
 C:\Users\Joris\Desktop\3\.NET\Booker\Booker\obj\Debug\netcoreapp5.0\Booker.AssemblyInfo.cs
@@ -456,3 +455,4 @@ C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.W
 C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.WebPages.Razor.dll
 C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.WebPages.dll
 C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\Microsoft.Web.Infrastructure.dll
+C:\Users\Joris\Desktop\3\.NET\Booker\Booker\obj\Debug\netcoreapp5.0\Booker.csprojAssemblyReference.cache

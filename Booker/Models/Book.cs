@@ -11,8 +11,8 @@ namespace Booker.Models
         [Key]
         public int ISBN { get; set; }
         public string Title { get; set; }
-        public int BookerUserId{ get; set; }
-        public BookerUser BookerUser{ get; set; }
+        public string BookerUserId{ get; set; }
+        public string Author{ get; set; }
         public string Editor { get; set; }
         public string Description { get; set; }
         [DataType(DataType.Date)]
@@ -20,5 +20,6 @@ namespace Booker.Models
         public string Image { get; set; }
         public string Categories{ get; set; }
         public string BuyLink{ get; set; }
+
     }
 }
