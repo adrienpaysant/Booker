@@ -394,3 +394,5 @@ C:\xampp\htdocs\Booker\Booker\obj\Debug\netcoreapp5.0\Razor\Areas\Identity\Pages
 C:\xampp\htdocs\Booker\Booker\obj\Debug\netcoreapp5.0\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
 C:\xampp\htdocs\Booker\Booker\obj\Debug\netcoreapp5.0\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
 C:\xampp\htdocs\Booker\Booker\obj\Debug\netcoreapp5.0\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
+C:\xampp\htdocs\Booker\Booker\bin\Debug\netcoreapp5.0\Microsoft.AspNetCore.Authentication.Google.dll
+C:\xampp\htdocs\Booker\Booker\bin\Debug\netcoreapp5.0\Octokit.dll
