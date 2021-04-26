@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[5.0.5, )"
             },
+            "Microsoft.AspNetCore.Authentication.OAuth": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.5, )"
@@ -87,6 +91,14 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[5.0.2, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "Octokit": {
+              "target": "Package",
+              "version": "[0.50.0, )"
             }
           },
           "imports": [

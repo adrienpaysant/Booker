@@ -8,6 +8,14 @@ using Booker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Booker.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authentication;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace Booker
 {
