@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Booker.Areas.Identity.Data;
@@ -23,7 +24,9 @@ namespace Booker.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        public string Username { get; set; }
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
+        public bool IsAuthor { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -33,21 +36,29 @@ namespace Booker.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            [Display(Name = "FristName ")]
+            public string NewFirstName { get; set; }
+            [Display(Name = "LastName ")]
+            public string NewLastName { get; set; }
+            [Display(Name ="Are you an Author ? ")]
+            public bool NewIsAuthor { get; set; }
+
         }
 
         private async Task LoadAsync(BookerUser user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var firstName =  user.FirstName;
+            var lastName = user.LastName;
+            var isAuthor = user.IsAuthor;
 
-            Username = userName;
-
+            FirstName = firstName;
+            LastName = lastName;
+            IsAuthor = isAuthor;
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                NewFirstName = firstName,
+                NewLastName = lastName,
+                NewIsAuthor = isAuthor,
             };
         }
 
@@ -77,13 +88,38 @@ namespace Booker.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            var lastName = user.LastName;
+            if (Input.NewLastName != lastName)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
+               user.LastName = Input.NewLastName;
+                var setLastNameResult = await _userManager.UpdateAsync(user);
+                if (!setLastNameResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = "Unexpected error when trying to set lastname.";
+                    return RedirectToPage();
+                }
+            }
+
+            var firstName = user.FirstName;
+            if (Input.NewFirstName != firstName)
+            {
+                user.FirstName = Input.NewFirstName;
+                var setLastNameResult = await _userManager.UpdateAsync(user);
+                if (!setLastNameResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set firstname.";
+                    return RedirectToPage();
+                }
+            }
+
+            var isAuthor = user.IsAuthor;
+            if (Input.NewIsAuthor != isAuthor)
+            {
+                user.IsAuthor = Input.NewIsAuthor;
+                var setLastNameResult = await _userManager.UpdateAsync(user);
+                if (!setLastNameResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set firstname.";
                     return RedirectToPage();
                 }
             }

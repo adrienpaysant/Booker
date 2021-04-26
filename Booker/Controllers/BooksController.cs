@@ -29,13 +29,31 @@ namespace Booker.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string bookCategory,string searchString)
         {
+            IQueryable<string> genreQuery = from b in _context.Book
+                                            orderby b.Categories
+                                            select b.Categories;
+
+            var books = from b in _context.Book select b;
+
+            if(!String.IsNullOrEmpty(searchString))
+                books = books.Where(s => EF.Functions.Like(s.Title,$"%{searchString}%"));
+
+            if(!string.IsNullOrEmpty(bookCategory))
+                books = books.Where(x => x.Categories == bookCategory);
+
+            var movieGenreVM = new BookGenreViewModel
+            {
+                Categories = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                Books = await books.ToListAsync()
+            };
             BookerUser user = await _userManager.GetUserAsync(User);
             if(user != null) ViewData["IsAuthor"] = user.IsAuthor.ToString();
-            return View(await _context.Book.ToListAsync());
-        }
 
+            return View(movieGenreVM);
+
+        }
         // GET: Books/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Booker.Models.Book>
+﻿
+@model Booker.Models.BookGenreViewModel
 
 @{
     ViewData["Title"] = "List";
@@ -6,8 +7,19 @@
 
 <h1>List of all Books</h1>
 
+<form asp-controller="Books" asp-action="Index" method="get">
+    <p>
+        <select asp-for="BookCategory" asp-items="Model.Categories">
+            <option value="">All</option>
+        </select>
+
+        Title: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
 <div class="d-flex flex-wrap" style="text-align:center">
-    @foreach(var item in Model)
+    @foreach(var item in Model.Books)
     {
         <a asp-action="Details" asp-route-id="@item.ISBN" class="mx-1" style="max-width:10%;height:10vh;vertical-align:middle">
             <img src="@item.Image" style="max-width:50px" />
@@ -15,3 +27,4 @@
         </a>
     }
 </div>
+
