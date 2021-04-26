@@ -47,6 +47,13 @@ namespace Booker.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "FristName ")]
+            public string FirstName { get; set; }
+            [Required]
+            [Display(Name = "LastName ")]
+            public string LastName { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -80,7 +87,7 @@ namespace Booker.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new BookerUser { UserName = Input.Email, Email = Input.Email, IsAuthor = Input.IsAuthor};
+                var user = new BookerUser { UserName = Input.Email, Email = Input.Email, IsAuthor = Input.IsAuthor,LastName=Input.LastName, FirstName = Input.FirstName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

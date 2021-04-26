@@ -15,5 +15,9 @@ namespace Booker.Areas.Identity.Data
         [PersonalData]
         public bool IsAuthor { get; set; }
 
+        [PersonalData]
+        public string FirstName { get; set; }
+        [PersonalData]
+        public string LastName { get; set; }
     }
 }

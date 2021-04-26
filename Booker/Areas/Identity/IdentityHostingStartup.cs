@@ -21,7 +21,8 @@ namespace Booker.Areas.Identity
                         context.Configuration.GetConnectionString("BookerContextIdConnection")));
 
                 services.AddDefaultIdentity<BookerUser>(options => { options.SignIn.RequireConfirmedAccount = true;
-                 }
+                   
+                }
                 ).AddEntityFrameworkStores<BookerContextId>();
             });
         }
