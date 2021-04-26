@@ -1,4 +1,4 @@
-﻿@model DemoASPCRUD.Models.Book
+﻿@model Booker.Models.Book
 
 @{
     ViewData["Title"] = "Create";
@@ -36,6 +36,21 @@
                 <label asp-for="ReleaseDate" class="control-label"></label>
                 <input asp-for="ReleaseDate" class="form-control" />
                 <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Categories" class="control-label"></label>
+                <input asp-for="Categories" class="form-control" />
+                <span asp-validation-for="Categories" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BuyLink" class="control-label"></label>
+                <input asp-for="BuyLink" class="form-control" />
+                <span asp-validation-for="BuyLink" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

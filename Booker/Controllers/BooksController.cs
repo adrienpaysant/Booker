@@ -1,25 +1,45 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DemoASPCRUD.Data;
-using DemoASPCRUD.Models;
+using Booker.Data;
+using Booker.Models;
 
-namespace DemoASPCRUD.Controllers
+namespace Booker.Controllers
 {
     public class BooksController : Controller
     {
-        private readonly MvcBookContext _context;
+        private readonly BookerContextId _context;
 
-        public BooksController(MvcBookContext context)
+        public BooksController(BookerContextId context)
         {
             _context = context;
         }
 
         // GET: Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string bookCategory, string searchString)
         {
-            return View(await _context.Book.ToListAsync());
+            IQueryable<string> genreQuery = from b in _context.Book
+                                            orderby b.Categories
+                                            select b.Categories;
+
+            var books = from b in _context.Book select b;
+
+            if (!String.IsNullOrEmpty(searchString))
+                books = books.Where(s => EF.Functions.Like(s.Title, $"%{searchString}%"));
+
+            if (!string.IsNullOrEmpty(bookCategory))
+                books = books.Where(x => x.Categories == bookCategory);
+
+            var movieGenreVM = new BookGenreViewModel{
+                Categories = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                Books = await books.ToListAsync()
+            };
+
+            return View(movieGenreVM);
         }
 
         // GET: Books/Details/5
@@ -31,7 +51,7 @@ namespace DemoASPCRUD.Controllers
             }
 
             var book = await _context.Book
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.ISBN == id);
             if (book == null)
             {
                 return NotFound();
@@ -47,11 +67,11 @@ namespace DemoASPCRUD.Controllers
         }
 
         // POST: Books/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Author,Editor,Description,ReleaseDate,Description")] Book book)
+        public async Task<IActionResult> Create([Bind("ISBN,Title,Author,Editor,Description,ReleaseDate,Image,Categories,BuyLink")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -79,13 +99,13 @@ namespace DemoASPCRUD.Controllers
         }
 
         // POST: Books/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Author,Editor,Description,ReleaseDate,Description")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("ISBN,Title,Author,Editor,Description,ReleaseDate,Image,Categories,BuyLink")] Book book)
         {
-            if (id != book.Id)
+            if (id != book.ISBN)
             {
                 return NotFound();
             }
@@ -99,7 +119,7 @@ namespace DemoASPCRUD.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookExists(book.Id))
+                    if (!BookExists(book.ISBN))
                     {
                         return NotFound();
                     }
@@ -122,7 +142,7 @@ namespace DemoASPCRUD.Controllers
             }
 
             var book = await _context.Book
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.ISBN == id);
             if (book == null)
             {
                 return NotFound();
@@ -144,7 +164,7 @@ namespace DemoASPCRUD.Controllers
 
         private bool BookExists(int id)
         {
-            return _context.Book.Any(e => e.Id == id);
+            return _context.Book.Any(e => e.ISBN == id);
         }
     }
 }

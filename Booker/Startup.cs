@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DemoASPCRUD.Data;
+using Booker.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Booker.Models;
 
-namespace DemoASPCRUD
+namespace Booker
 {
     public class Startup
     {
@@ -21,14 +24,16 @@ namespace DemoASPCRUD
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<MvcBookContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("MvcBookContext")));
+           /* services.AddDbContext<BookerContextId>(options =>
+                        options.UseSqlServer(Configuration.GetConnectionString("BookerDB")));*/
+            //  services.AddDefaultIdentity<User>().AddRoles<IdentityRole>().AddEntityFrameworkStores<BookerContext>();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app,IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if(env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -43,6 +48,7 @@ namespace DemoASPCRUD
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -50,6 +56,7 @@ namespace DemoASPCRUD
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
