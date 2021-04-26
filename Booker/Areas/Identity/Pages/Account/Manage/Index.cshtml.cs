@@ -26,6 +26,7 @@ namespace Booker.Areas.Identity.Pages.Account.Manage
 
         public string LastName { get; set; }
         public string FirstName { get; set; }
+        public bool IsAuthor { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -39,6 +40,8 @@ namespace Booker.Areas.Identity.Pages.Account.Manage
             public string NewFirstName { get; set; }
             [Display(Name = "LastName ")]
             public string NewLastName { get; set; }
+            [Display(Name ="Are you an Author ? ")]
+            public bool NewIsAuthor { get; set; }
 
         }
 
@@ -46,13 +49,16 @@ namespace Booker.Areas.Identity.Pages.Account.Manage
         {
             var firstName =  user.FirstName;
             var lastName = user.LastName;
-         
+            var isAuthor = user.IsAuthor;
+
             FirstName = firstName;
             LastName = lastName;
+            IsAuthor = isAuthor;
             Input = new InputModel
             {
                 NewFirstName = firstName,
-                NewLastName = lastName
+                NewLastName = lastName,
+                NewIsAuthor = isAuthor,
             };
         }
 
@@ -106,6 +112,17 @@ namespace Booker.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            var isAuthor = user.IsAuthor;
+            if (Input.NewIsAuthor != isAuthor)
+            {
+                user.IsAuthor = Input.NewIsAuthor;
+                var setLastNameResult = await _userManager.UpdateAsync(user);
+                if (!setLastNameResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set firstname.";
+                    return RedirectToPage();
+                }
+            }
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
