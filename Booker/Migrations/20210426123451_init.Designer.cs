@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Booker.Migrations
 {
     [DbContext(typeof(BookerContextId))]
-    [Migration("20210426120527_init")]
+    [Migration("20210426123451_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
