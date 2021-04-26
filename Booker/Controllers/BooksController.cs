@@ -149,5 +149,9 @@ namespace Booker.Controllers
         {
             return _context.Book.Any(e => e.ISBN == id);
         }
+        public bool SaveImage()
+        {
+            return true;
+        }
     }
 }
