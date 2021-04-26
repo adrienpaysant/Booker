@@ -5,4 +5,4 @@ autoCloseIssue: true
 # set develop as the source branch for any label
 branches:
   - label: '*'
-    name: develop
+    name: dev
