@@ -12,9 +12,9 @@ namespace Booker.Controllers
 {
     public class BooksController : Controller
     {
-        private readonly BookerContext _context;
+        private readonly BookerContextId _context;
 
-        public BooksController(BookerContext context)
+        public BooksController(BookerContextId context)
         {
             _context = context;
         }

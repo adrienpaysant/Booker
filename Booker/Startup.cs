@@ -6,10 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Booker.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Booker.Models;
 
 namespace Booker
 {
@@ -26,8 +24,10 @@ namespace Booker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<BookerContext>(options =>
-                        options.UseSqlServer(Configuration.GetConnectionString("BookerDB")));
+           /* services.AddDbContext<BookerContextId>(options =>
+                        options.UseSqlServer(Configuration.GetConnectionString("BookerDB")));*/
+            //  services.AddDefaultIdentity<User>().AddRoles<IdentityRole>().AddEntityFrameworkStores<BookerContext>();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +48,7 @@ namespace Booker
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -55,6 +56,7 @@ namespace Booker
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
