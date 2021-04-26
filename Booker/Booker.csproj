@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\img\2.jpg" />
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
 </Project>

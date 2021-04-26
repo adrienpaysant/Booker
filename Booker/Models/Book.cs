@@ -16,7 +16,7 @@ namespace Booker.Models
         public string Description { get; set; }
         [DataType(DataType.Date)]
         public DateTime ReleaseDate { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
         public string Categories{ get; set; }
         public string BuyLink{ get; set; }
     }

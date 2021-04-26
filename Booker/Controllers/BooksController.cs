@@ -7,12 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Booker.Data;
 using Booker.Models;
+using Booker.ViewModels;
 using System.Web.Helpers;
 using Microsoft.AspNetCore.Http;
+using System.IO;
+
 
 namespace Booker.Controllers
 {
-    public class BooksController : Controller
+    public class BooksController: Controller
     {
         private readonly BookerContextId _context;
 
@@ -30,14 +33,14 @@ namespace Booker.Controllers
         // GET: Books/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if(id == null)
             {
                 return NotFound();
             }
 
             var book = await _context.Book
                 .FirstOrDefaultAsync(m => m.ISBN == id);
-            if (book == null)
+            if(book == null)
             {
                 return NotFound();
             }
@@ -51,32 +54,57 @@ namespace Booker.Controllers
             return View();
         }
 
+        private string UploadedFile(BookViewModel model)
+        {
+            string filePath = null;
+            if(model.Image != null)
+            {
+                filePath = "/img/"+model.ISBN+"."+model.Image.FileName.Split(".").Last();
+                using var fileStream = new FileStream("wwwroot"+filePath,FileMode.Create);
+                model.Image.CopyTo(fileStream);
+            }
+            return filePath;
+        }
         // POST: Books/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ISBN,Title,Author,Editor,Description,ReleaseDate,Image,Categories,BuyLink")] Book book)
+        public async Task<IActionResult> Create(BookViewModel vm)
         {
-            if (ModelState.IsValid)
+            Book book = null;
+            if(ModelState.IsValid)
             {
+                string uniqueFileName = UploadedFile(vm);
+                book = new Book
+                {
+                    Author = vm.Author,
+                    ISBN = vm.ISBN,
+                    BuyLink = vm.BuyLink,
+                    Categories = vm.Categories,
+                    Description = vm.Description,
+                    Editor = vm.Editor,
+                    Title = vm.Title,
+                    ReleaseDate = vm.ReleaseDate,
+                    Image = uniqueFileName,
+                };
                 _context.Add(book);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(book);
         }
-        
+
         // GET: Books/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if(id == null)
             {
                 return NotFound();
             }
 
             var book = await _context.Book.FindAsync(id);
-            if (book == null)
+            if(book == null)
             {
                 return NotFound();
             }
@@ -88,23 +116,23 @@ namespace Booker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ISBN,Title,Author,Editor,Description,ReleaseDate,Image,Categories,BuyLink")] Book book)
+        public async Task<IActionResult> Edit(int id,[Bind("ISBN,Title,Author,Editor,Description,ReleaseDate,Image,Categories,BuyLink")] Book book)
         {
-            if (id != book.ISBN)
+            if(id != book.ISBN)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
                 try
                 {
                     _context.Update(book);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch(DbUpdateConcurrencyException)
                 {
-                    if (!BookExists(book.ISBN))
+                    if(!BookExists(book.ISBN))
                     {
                         return NotFound();
                     }
@@ -121,14 +149,14 @@ namespace Booker.Controllers
         // GET: Books/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if(id == null)
             {
                 return NotFound();
             }
 
             var book = await _context.Book
                 .FirstOrDefaultAsync(m => m.ISBN == id);
-            if (book == null)
+            if(book == null)
             {
                 return NotFound();
             }
@@ -144,6 +172,7 @@ namespace Booker.Controllers
             var book = await _context.Book.FindAsync(id);
             _context.Book.Remove(book);
             await _context.SaveChangesAsync();
+            
             return RedirectToAction(nameof(Index));
         }
 
