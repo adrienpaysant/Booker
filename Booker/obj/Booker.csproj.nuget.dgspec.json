@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Joris\\Desktop\\3\\.NET\\Booker\\Booker\\Booker.csproj": {}
+    "C:\\xampp\\htdocs\\Booker\\Booker\\Booker.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Joris\\Desktop\\3\\.NET\\Booker\\Booker\\Booker.csproj": {
+    "C:\\xampp\\htdocs\\Booker\\Booker\\Booker.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Joris\\Desktop\\3\\.NET\\Booker\\Booker\\Booker.csproj",
+        "projectUniqueName": "C:\\xampp\\htdocs\\Booker\\Booker\\Booker.csproj",
         "projectName": "Booker",
-        "projectPath": "C:\\Users\\Joris\\Desktop\\3\\.NET\\Booker\\Booker\\Booker.csproj",
-        "packagesPath": "C:\\Users\\Joris\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Joris\\Desktop\\3\\.NET\\Booker\\Booker\\obj\\",
+        "projectPath": "C:\\xampp\\htdocs\\Booker\\Booker\\Booker.csproj",
+        "packagesPath": "C:\\Users\\adrien.paysant\\.nuget\\packages\\",
+        "outputPath": "C:\\xampp\\htdocs\\Booker\\Booker\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Joris\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\adrien.paysant\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -44,9 +44,17 @@
         "net5.0": {
           "targetAlias": "netcoreapp5.0",
           "dependencies": {
-            "Microsoft.EntityFrameworkCore": {
+            "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.5, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.4, )"
+            },
+            "Microsoft.AspNetCore.Identity.UI": {
+              "target": "Package",
+              "version": "[5.0.4, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -91,7 +99,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
