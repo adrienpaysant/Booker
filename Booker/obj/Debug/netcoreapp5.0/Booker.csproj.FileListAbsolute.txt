@@ -450,3 +450,9 @@ C:\xampp\htdocs\Booker\Booker\bin\Debug\netcoreapp5.0\Microsoft.AspNetCore.Authe
 C:\xampp\htdocs\Booker\Booker\bin\Debug\netcoreapp5.0\Octokit.dll
 C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\Microsoft.AspNetCore.Authentication.Google.dll
 C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\Octokit.dll
+C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.Razor.dll
+C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.Helpers.dll
+C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.WebPages.Deployment.dll
+C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.WebPages.Razor.dll
+C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.WebPages.dll
+C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\Microsoft.Web.Infrastructure.dll

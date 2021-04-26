@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Booker.Data;
 using Booker.Models;
+using System.Web.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace Booker.Controllers
 {
@@ -64,7 +66,7 @@ namespace Booker.Controllers
             }
             return View(book);
         }
-
+        
         // GET: Books/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -148,10 +150,6 @@ namespace Booker.Controllers
         private bool BookExists(int id)
         {
             return _context.Book.Any(e => e.ISBN == id);
-        }
-        public bool SaveImage()
-        {
-            return true;
         }
     }
 }
