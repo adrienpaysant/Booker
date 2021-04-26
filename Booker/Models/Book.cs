@@ -19,6 +19,5 @@ namespace Booker.Models
         public string Image { get; set; }
         public string Categories{ get; set; }
         public string BuyLink{ get; set; }
-      
     }
 }
