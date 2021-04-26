@@ -22,7 +22,7 @@ namespace Booker.Controllers
         private readonly BookerContextId _context;
         private readonly UserManager<BookerUser> _userManager;
 
-        public BooksController(BookerContextId context, UserManager<BookerUser> userManager)
+        public BooksController(BookerContextId context,UserManager<BookerUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -31,12 +31,16 @@ namespace Booker.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
+            BookerUser user = await _userManager.GetUserAsync(User);
+            if(user != null) ViewData["IsAuthor"] = user.IsAuthor.ToString();
             return View(await _context.Book.ToListAsync());
         }
 
         // GET: Books/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            BookerUser user = await _userManager.GetUserAsync(User);
+            if(user != null) ViewData["IsAuthor"] = user.IsAuthor.ToString();
             if(id == null)
             {
                 return NotFound();

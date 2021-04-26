@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Booker.Areas.Identity.Data
+
+@inject UserManager<BookerUser> UserManager
+
+@{ 
+    BookerUser user = await UserManager.GetUserAsync(User);
+    if(user!=null)ViewData["IsAuthor"] = user.IsAuthor.ToString();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -18,16 +28,25 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Create">Add Your Book</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Index">Display all Books</a>
-                        </li>
+
+
+                        @if(User.Identity.Name != null && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Index">Books</a>
+                            </li>
+                            @if(ViewData["IsAuthor"] != null && ViewData["IsAuthor"].ToString().Equals("true"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Create">Add Book</a>
+                                </li>
+                            }
+                        }
+
+
                         <li class="nav-item" style="margin-left:50%">
                             <partial name="_LoginPartial" />
                         </li>
@@ -44,12 +63,12 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - Booker - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2021 - Booker - Grégoire Rebstein - Adrien Paysant - Joris Monnet - HE-Arc - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+    @RenderSection("Scripts",required: false)
 </body>
 </html>
