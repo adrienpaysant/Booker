@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Booker.Areas.Identity.Data;
@@ -23,7 +24,8 @@ namespace Booker.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        public string Username { get; set; }
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -33,13 +35,25 @@ namespace Booker.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            
+            [Display(Name = "FristName ")]
+            public string NewFirstName { get; set; }
+            [Display(Name = "LastName ")]
+            public string NewLastName { get; set; }
 
         }
 
         private async Task LoadAsync(BookerUser user)
         {
-            
+            var firstName =  user.FirstName;
+            var lastName = user.LastName;
+         
+            FirstName = firstName;
+            LastName = lastName;
+            Input = new InputModel
+            {
+                NewFirstName = firstName,
+                NewLastName = lastName
+            };
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -68,7 +82,30 @@ namespace Booker.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            
+            var lastName = user.LastName;
+            if (Input.NewLastName != lastName)
+            {
+               user.LastName = Input.NewLastName;
+                var setLastNameResult = await _userManager.UpdateAsync(user);
+                if (!setLastNameResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set lastname.";
+                    return RedirectToPage();
+                }
+            }
+
+            var firstName = user.FirstName;
+            if (Input.NewFirstName != firstName)
+            {
+                user.FirstName = Input.NewFirstName;
+                var setLastNameResult = await _userManager.UpdateAsync(user);
+                if (!setLastNameResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set firstname.";
+                    return RedirectToPage();
+                }
+            }
+
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
