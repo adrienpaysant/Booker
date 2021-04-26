@@ -456,3 +456,9 @@ C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.W
 C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.WebPages.dll
 C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\Microsoft.Web.Infrastructure.dll
 C:\Users\Joris\Desktop\3\.NET\Booker\Booker\obj\Debug\netcoreapp5.0\Booker.csprojAssemblyReference.cache
+C:\xampp\htdocs\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.Razor.dll
+C:\xampp\htdocs\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.Helpers.dll
+C:\xampp\htdocs\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.WebPages.Deployment.dll
+C:\xampp\htdocs\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.WebPages.Razor.dll
+C:\xampp\htdocs\Booker\Booker\bin\Debug\netcoreapp5.0\System.Web.WebPages.dll
+C:\xampp\htdocs\Booker\Booker\bin\Debug\netcoreapp5.0\Microsoft.Web.Infrastructure.dll
