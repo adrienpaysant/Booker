@@ -54,16 +54,27 @@ namespace Booker.Controllers
             return View();
         }
 
-        private string UploadedFile(BookViewModel model)
+        static private string UploadedFile(BookViewModel model)
         {
             string filePath = null;
             if(model.Image != null)
             {
-                filePath = "/img/"+model.ISBN+"."+model.Image.FileName.Split(".").Last();
-                using var fileStream = new FileStream("wwwroot"+filePath,FileMode.Create);
+                filePath = "/img/" + model.ISBN + "." + model.Image.FileName.Split(".").Last();
+                using var fileStream = new FileStream("wwwroot" + filePath,FileMode.Create);
                 model.Image.CopyTo(fileStream);
             }
+            else
+            {
+                string[] files = Directory.GetFiles("wwwroot/img/",model.ISBN + ".*",SearchOption.TopDirectoryOnly);
+                if(files.Length == 1) return files[0][7..]; //take it from /img/
+            }
             return filePath;
+        }
+
+        static private void DeleteImage(int ISBN)
+        {
+            string[] files = Directory.GetFiles("wwwroot/img/",ISBN + ".*",SearchOption.TopDirectoryOnly);
+            if(files.Length == 1) System.IO.File.Delete(files[0]);
         }
         // POST: Books/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -116,9 +127,10 @@ namespace Booker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,[Bind("ISBN,Title,Author,Editor,Description,ReleaseDate,Image,Categories,BuyLink")] Book book)
+        public async Task<IActionResult> Edit(int id,BookViewModel vm)
         {
-            if(id != book.ISBN)
+            Book book = null;
+            if(id != vm.ISBN)
             {
                 return NotFound();
             }
@@ -127,6 +139,19 @@ namespace Booker.Controllers
             {
                 try
                 {
+                    string uniqueFileName = UploadedFile(vm);
+                    book = new Book
+                    {
+                        Author = vm.Author,
+                        ISBN = vm.ISBN,
+                        BuyLink = vm.BuyLink,
+                        Categories = vm.Categories,
+                        Description = vm.Description,
+                        Editor = vm.Editor,
+                        Title = vm.Title,
+                        ReleaseDate = vm.ReleaseDate,
+                        Image = uniqueFileName,
+                    };
                     _context.Update(book);
                     await _context.SaveChangesAsync();
                 }
@@ -153,14 +178,14 @@ namespace Booker.Controllers
             {
                 return NotFound();
             }
-
             var book = await _context.Book
                 .FirstOrDefaultAsync(m => m.ISBN == id);
+            
             if(book == null)
             {
                 return NotFound();
             }
-
+            DeleteImage((int)id);//cast ok because id is verified in first "if"
             return View(book);
         }
 
@@ -172,7 +197,7 @@ namespace Booker.Controllers
             var book = await _context.Book.FindAsync(id);
             _context.Book.Remove(book);
             await _context.SaveChangesAsync();
-            
+
             return RedirectToAction(nameof(Index));
         }
 
