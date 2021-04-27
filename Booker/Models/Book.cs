@@ -10,7 +10,10 @@ namespace Booker.Models
     {
         [Key]
         [Required]
-        public int ISBN { get; set; }
+        [MaxLength(13)]
+        [MinLength(13)]
+        [RegularExpression("^[0-9]*$",ErrorMessage = "ISBN must be numeric")]
+        public string ISBN { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]

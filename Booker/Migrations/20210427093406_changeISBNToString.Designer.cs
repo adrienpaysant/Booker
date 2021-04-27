@@ -3,14 +3,16 @@ using System;
 using Booker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Booker.Migrations
 {
     [DbContext(typeof(BookerContextId))]
-    partial class BookerContextIdModelSnapshot : ModelSnapshot
+    [Migration("20210427093406_changeISBNToString")]
+    partial class changeISBNToString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
