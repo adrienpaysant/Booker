@@ -22,14 +22,14 @@ namespace Booker.Controllers
         private readonly BookerContextId _context;
         private readonly UserManager<BookerUser> _userManager;
 
-        public BooksController(BookerContextId context, UserManager<BookerUser> userManager)
+        public BooksController(BookerContextId context,UserManager<BookerUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
         // GET: Books
-        public async Task<IActionResult> Index(string bookCategory, string searchString)
+        public async Task<IActionResult> Index(string bookCategory,string searchString)
         {
             IQueryable<string> genreQuery = from b in _context.Book
                                             orderby b.Categories
@@ -37,30 +37,35 @@ namespace Booker.Controllers
 
             var books = from b in _context.Book select b;
 
-            if (!String.IsNullOrEmpty(searchString))
-                books = books.Where(s => EF.Functions.Like(s.Title, $"%{searchString}%"));
+            if(!String.IsNullOrEmpty(searchString))
+                books = books.Where(s => EF.Functions.Like(s.Title,$"%{searchString}%"));
 
-            if (!string.IsNullOrEmpty(bookCategory))
+            if(!string.IsNullOrEmpty(bookCategory))
                 books = books.Where(x => x.Categories == bookCategory);
 
-            var movieGenreVM = new BookGenreViewModel{
+            var movieGenreVM = new BookGenreViewModel
+            {
                 Categories = new SelectList(await genreQuery.Distinct().ToListAsync()),
                 Books = await books.ToListAsync()
             };
+            BookerUser user = await _userManager.GetUserAsync(User);
+            if(user != null) ViewData["IsAuthor"] = user.IsAuthor.ToString();
 
             return View(movieGenreVM);
-        }
 
+        }
         // GET: Books/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
+            BookerUser user = await _userManager.GetUserAsync(User);
+            if(user != null) ViewData["IsAuthor"] = user.IsAuthor.ToString();
             if(id == null)
             {
                 return NotFound();
             }
 
             var book = await _context.Book
-                .FirstOrDefaultAsync(m => m.ISBN == id);
+                .FirstOrDefaultAsync(m => m.ISBN.Equals(id));
             if(book == null)
             {
                 return NotFound();
@@ -92,9 +97,9 @@ namespace Booker.Controllers
             return filePath;
         }
 
-        static private void DeleteImage(int ISBN)
+        static private void DeleteImage(string ISBN)
         {
-            string[] files = Directory.GetFiles("wwwroot/img/",ISBN + ".*",SearchOption.TopDirectoryOnly);
+            string[] files = Directory.GetFiles("wwwroot/img/",ISBN+".*",SearchOption.TopDirectoryOnly);
             if(files.Length == 1) System.IO.File.Delete(files[0]);
         }
         // POST: Books/Create
@@ -128,7 +133,7 @@ namespace Booker.Controllers
         }
 
         // GET: Books/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if(id == null)
             {
@@ -148,10 +153,10 @@ namespace Booker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,BookViewModel vm)
+        public async Task<IActionResult> Edit(string id,BookViewModel vm)
         {
             Book book = null;
-            if(id != vm.ISBN)
+            if(!id.Equals(vm.ISBN))
             {
                 return NotFound();
             }
@@ -193,38 +198,37 @@ namespace Booker.Controllers
         }
 
         // GET: Books/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if(id == null)
             {
                 return NotFound();
             }
             var book = await _context.Book
-                .FirstOrDefaultAsync(m => m.ISBN == id);
+                .FirstOrDefaultAsync(m => m.ISBN.Equals(id));
 
             if(book == null)
             {
                 return NotFound();
             }
-            DeleteImage((int)id);//cast ok because id is verified in first "if"
             return View(book);
         }
 
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var book = await _context.Book.FindAsync(id);
             _context.Book.Remove(book);
             await _context.SaveChangesAsync();
-
+            DeleteImage(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BookExists(int id)
+        private bool BookExists(string id)
         {
-            return _context.Book.Any(e => e.ISBN == id);
+            return _context.Book.Any(e => e.ISBN.Equals(id));
         }
     }
 }

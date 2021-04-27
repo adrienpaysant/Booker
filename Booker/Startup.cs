@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Booker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -16,6 +18,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace Booker
 {
@@ -42,6 +45,12 @@ namespace Booker
                 opts.ClientId = "348954018086-2dr09kv743l0fc7hagt8qvtbmto101i0.apps.googleusercontent.com";
                 opts.ClientSecret = "rYmFFslGlDJinExGyA7R9m2m";
                 opts.SignInScheme = IdentityConstants.ExternalScheme;
+            });
+          
+
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build()));
             });
         }
 
