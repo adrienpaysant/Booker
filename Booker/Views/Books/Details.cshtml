@@ -63,8 +63,24 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
 
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Rating)
+        </dt>
+        <dd class="col-sm-10">
+            @if(Model.Rating != null)
+            {
+                @Html.DisplayFor(model => model.Rating)
+            }
+            else
+            {
+                @Html.Display("No Rating Yet")
+            }
+        </dd>
     </dl>
 </div>
+@if(user != null && user.Id != Model.BookerUserId)
+{
+}
 <div>
     @if(user != null && user.Id == Model.BookerUserId)
     {

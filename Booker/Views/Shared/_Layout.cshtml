@@ -3,9 +3,9 @@
 
 @inject UserManager<BookerUser> UserManager
 
-@{ 
+@{
     BookerUser user = await UserManager.GetUserAsync(User);
-    if(user!=null)ViewData["IsAuthor"] = user.IsAuthor.ToString();
+    if(user != null) ViewData["IsAuthor"] = user.IsAuthor.ToString();
 }
 
 <!DOCTYPE html>
@@ -53,12 +53,22 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
+    @if(ViewData["Title"].Equals("List"))
+    {
+        <div class="container-fluid">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    }
+    else
+    {
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    }
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2021 - Booker - Grégoire Rebstein - Adrien Paysant - Joris Monnet - HE-Arc - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>

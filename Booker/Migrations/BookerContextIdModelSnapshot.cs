@@ -125,6 +125,9 @@ namespace Booker.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("TEXT");
 
+                    b.Property<float?>("Rating")
+                        .HasColumnType("REAL");
+
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("TEXT");
 
