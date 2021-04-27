@@ -3,14 +3,16 @@ using System;
 using Booker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Booker.Migrations
 {
     [DbContext(typeof(BookerContextId))]
-    partial class BookerContextIdModelSnapshot : ModelSnapshot
+    [Migration("20210427191124_updateBookRating")]
+    partial class updateBookRating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,6 +184,8 @@ namespace Booker.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BookId");
+
                     b.ToTable("Rating");
                 });
 
@@ -326,6 +330,13 @@ namespace Booker.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Booker.Models.Rating", b =>
+                {
+                    b.HasOne("Booker.Models.Book", null)
+                        .WithMany("RatingList")
+                        .HasForeignKey("BookId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -380,6 +391,8 @@ namespace Booker.Migrations
             modelBuilder.Entity("Booker.Models.Book", b =>
                 {
                     b.Navigation("CommentList");
+
+                    b.Navigation("RatingList");
                 });
 #pragma warning restore 612, 618
         }

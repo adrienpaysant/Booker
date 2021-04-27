@@ -47,7 +47,7 @@
             @Html.DisplayFor(model => model.ReleaseDate)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Categories)
+            Categories
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Categories)
@@ -64,22 +64,40 @@
         </dd>
 
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Rating)
+            Rating (0-5) : 
         </dt>
         <dd class="col-sm-10">
-            @if(Model.Rating != null)
+            @if(ViewBag.ratingSum!=null)
             {
-                @Html.DisplayFor(model => model.Rating)
+                <p>@ViewBag.ratingSum</p>
             }
             else
             {
-                @Html.Display("No Rating Yet")
+                <p>No Rating Yet</p>
             }
         </dd>
     </dl>
 </div>
 @if(user != null && user.Id != Model.BookerUserId)
 {
+    <div>
+        <form asp-action="Details">
+            <div class="form-group">
+                <label for="rating" class="control-label">Rate Here (0-5): </label>
+                @if(ViewBag.rating != null)
+                {
+                    <input type="number" max="5" min="0" step="1" name="rating" value="@ViewBag.rating" />
+                }
+                else
+                {
+                    <input type="number" max="5" min="0" step="1" name="rating" />
+                }
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Rate" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
 }
 <div>
     @if(user != null && user.Id == Model.BookerUserId)

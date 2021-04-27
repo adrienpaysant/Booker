@@ -10,7 +10,7 @@ using Booker.Data;
 using Booker.Models;
 using Booker.Areas.Identity.Data;
 using Booker.ViewModels;
-using System.Web.Helpers;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 
@@ -57,13 +57,24 @@ namespace Booker.Controllers
         // GET: Books/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            BookerUser user = await _userManager.GetUserAsync(User);
-            if(user != null) ViewData["IsAuthor"] = user.IsAuthor.ToString();
             if(id == null)
             {
                 return NotFound();
             }
-
+            BookerUser user = await _userManager.GetUserAsync(User);
+            if(user == null) return NotFound();
+            ViewData["IsAuthor"] = user.IsAuthor.ToString();
+            try
+            {
+                Rating oldRating = _context.Rating.Where(r => r.BookerUserId.Equals(user.Id) && r.BookId.Equals(id)).First();
+                ViewBag.rating = oldRating.Value;
+            } catch{ }
+            try
+            {
+                List<Rating> ratingList = _context.Rating.Where(r => r.BookId.Equals(id)).ToList();
+                ViewBag.ratingSum = ratingList.Sum(r => r.Value) / ratingList.Count;
+            }
+            catch { }
             var book = await _context.Book
                 .FirstOrDefaultAsync(m => m.ISBN.Equals(id));
             if(book == null)
@@ -99,11 +110,11 @@ namespace Booker.Controllers
 
         static private void DeleteImage(string ISBN)
         {
-            string[] files = Directory.GetFiles("wwwroot/img/",ISBN+".*",SearchOption.TopDirectoryOnly);
+            string[] files = Directory.GetFiles("wwwroot/img/",ISBN + ".*",SearchOption.TopDirectoryOnly);
             if(files.Length == 1) System.IO.File.Delete(files[0]);
         }
 
-        static private void ChangeImageId(string id, string ISBN)
+        static private void ChangeImageId(string id,string ISBN)
         {
             string[] files = Directory.GetFiles("wwwroot/img/",id + ".*",SearchOption.TopDirectoryOnly);
             if(files.Length == 1) System.IO.File.Move(files[0],files[0].Replace(id,ISBN));
@@ -139,6 +150,42 @@ namespace Booker.Controllers
             return View(book);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Details(string id,int rating)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            Book book = await _context.Book.FindAsync(id);
+            if(book == null)
+            {
+                return NotFound();
+            }
+            string currentUserId = _userManager.GetUserId(User);
+            Rating newRating = new Rating
+            {
+                BookerUserId = currentUserId,
+                BookId = id,
+                Value = rating
+            };
+            try
+            {
+                Rating oldRating = _context.Rating.Where(r => r.BookerUserId.Equals(currentUserId) && r.BookId.Equals(id)).First();
+                _context.Rating.Update(newRating);
+                Debug.WriteLine("old");
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                _context.Rating.Add(newRating);
+                await _context.SaveChangesAsync();
+                Debug.WriteLine("NEW");
+                return RedirectToAction(nameof(Index));
+            }
+        }
         // GET: Books/Edit/5
         public async Task<IActionResult> Edit(string? id)
         {
@@ -165,14 +212,16 @@ namespace Booker.Controllers
             Book book = null;
             if(!id.Equals(vm.ISBN))
             {
-                if(id!=null){
+                if(id != null)
+                {
                     var bookToDelete = await _context.Book.FindAsync(id);
                     _context.Book.Remove(bookToDelete);
                     await _context.SaveChangesAsync();
                     ChangeImageId(id,vm.ISBN);
                     return await Create(vm);
                 }
-                else {
+                else
+                {
                     return NotFound();
                 }
             }
