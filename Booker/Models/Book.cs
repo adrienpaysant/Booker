@@ -24,7 +24,6 @@ namespace Booker.Models
         [Required]
         [DataType(DataType.Date)]
         public DateTime ReleaseDate { get; set; }
-        [Required]
         public string Image { get; set; }
         [Required]
         [Display(Name = "Categories (separated by a comma)")]

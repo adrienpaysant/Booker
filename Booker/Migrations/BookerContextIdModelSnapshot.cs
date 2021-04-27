@@ -99,35 +99,41 @@ namespace Booker.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Author")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("BookerUserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("BuyLink")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Categories")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Editor")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Image")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("ISBN");
-
-                    b.HasIndex("BookerUserId");
 
                     b.ToTable("Book");
                 });
@@ -264,13 +270,6 @@ namespace Booker.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Booker.Models.Book", b =>
-                {
-                    b.HasOne("Booker.Areas.Identity.Data.BookerUser", null)
-                        .WithMany("Books")
-                        .HasForeignKey("BookerUserId");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -320,11 +319,6 @@ namespace Booker.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Booker.Areas.Identity.Data.BookerUser", b =>
-                {
-                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }
