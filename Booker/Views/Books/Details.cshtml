@@ -7,7 +7,6 @@
 @{
     ViewData["Title"] = "Details";
     BookerUser user = await UserManager.GetUserAsync(User);
-    if(user!=null)ViewData["IsAuthor"] = user.IsAuthor.ToString();
 }
 
 <h1>Details</h1>
@@ -67,7 +66,7 @@
     </dl>
 </div>
 <div>
-    @if(ViewData["IsAuthor"] != null && ViewData["IsAuthor"].ToString().Equals("true"))
+    @if(user!=null && user.Id==Model.BookerUserId)
     {
         <a asp-action="Edit" asp-route-id="@Model.ISBN">Edit</a>
         <a asp-action="Delete" asp-route-id="@Model.ISBN">Delete</a>
