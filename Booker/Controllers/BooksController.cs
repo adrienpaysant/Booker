@@ -102,6 +102,13 @@ namespace Booker.Controllers
             string[] files = Directory.GetFiles("wwwroot/img/",ISBN+".*",SearchOption.TopDirectoryOnly);
             if(files.Length == 1) System.IO.File.Delete(files[0]);
         }
+
+        static private void ChangeImageId(string id, string ISBN)
+        {
+            string[] files = Directory.GetFiles("wwwroot/img/",id + ".*",SearchOption.TopDirectoryOnly);
+            if(files.Length == 1) System.IO.File.Move(files[0],files[0].Replace(id,ISBN));
+        }
+
         // POST: Books/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -158,7 +165,16 @@ namespace Booker.Controllers
             Book book = null;
             if(!id.Equals(vm.ISBN))
             {
-                return NotFound();
+                if(id!=null){
+                    var bookToDelete = await _context.Book.FindAsync(id);
+                    _context.Book.Remove(bookToDelete);
+                    await _context.SaveChangesAsync();
+                    ChangeImageId(id,vm.ISBN);
+                    return await Create(vm);
+                }
+                else {
+                    return NotFound();
+                }
             }
 
             if(ModelState.IsValid)

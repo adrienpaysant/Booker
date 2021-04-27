@@ -33,6 +33,6 @@ namespace Booker.Models
         public string Categories { get; set; }
         [Required]
         public string BuyLink { get; set; }
-
+        public List<Comments> CommentList { get; set; }
     }
 }

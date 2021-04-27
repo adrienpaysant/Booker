@@ -66,7 +66,7 @@
     </dl>
 </div>
 <div>
-    @if(user!=null && user.Id==Model.BookerUserId)
+    @if(user != null && user.Id == Model.BookerUserId)
     {
         <a asp-action="Edit" asp-route-id="@Model.ISBN">Edit</a>
         <a asp-action="Delete" asp-route-id="@Model.ISBN">Delete</a>
