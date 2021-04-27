@@ -67,7 +67,7 @@
             Rating (0-5) : 
         </dt>
         <dd class="col-sm-10">
-            @if(ViewBag.ratingSum!=null)
+            @if(!float.IsNaN(ViewBag.ratingSum))
             {
                 <p>@ViewBag.ratingSum</p>
             }

@@ -68,11 +68,12 @@ namespace Booker.Controllers
             {
                 Rating oldRating = _context.Rating.Where(r => r.BookerUserId.Equals(user.Id) && r.BookId.Equals(id)).First();
                 ViewBag.rating = oldRating.Value;
-            } catch{ }
+            }
+            catch { }
             try
             {
                 List<Rating> ratingList = _context.Rating.Where(r => r.BookId.Equals(id)).ToList();
-                ViewBag.ratingSum = ratingList.Sum(r => r.Value) / ratingList.Count;
+                ViewBag.ratingSum = ((float)ratingList.Sum(r => r.Value)) / ratingList.Count;
             }
             catch { }
             var book = await _context.Book
@@ -173,18 +174,14 @@ namespace Booker.Controllers
             try
             {
                 Rating oldRating = _context.Rating.Where(r => r.BookerUserId.Equals(currentUserId) && r.BookId.Equals(id)).First();
-                _context.Rating.Update(newRating);
-                Debug.WriteLine("old");
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _context.Rating.Remove(oldRating);
             }
-            catch
-            {
-                _context.Rating.Add(newRating);
-                await _context.SaveChangesAsync();
-                Debug.WriteLine("NEW");
-                return RedirectToAction(nameof(Index));
-            }
+            catch { }
+
+            _context.Rating.Add(newRating);
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details));
         }
         // GET: Books/Edit/5
         public async Task<IActionResult> Edit(string? id)
