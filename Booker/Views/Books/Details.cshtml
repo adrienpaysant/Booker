@@ -1,15 +1,20 @@
 ﻿@model Booker.Models.Book
+@using Microsoft.AspNetCore.Identity
+@using Booker.Areas.Identity.Data
+
+@inject UserManager<BookerUser> UserManager
 
 @{
     ViewData["Title"] = "Details";
+    BookerUser user = await UserManager.GetUserAsync(User);
 }
 
 <h1>Details</h1>
 
 <div>
     <h4>Book</h4>
-    <hr/>
-    <img src="@Model.Image" class="img-fluid mb-3" style="width:20%"/>
+    <hr />
+    <img src="@Model.Image" class="img-fluid mb-3" style="width:20%" />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
@@ -61,7 +66,7 @@
     </dl>
 </div>
 <div>
-    @if(true) //TODO CHECK PERMISSION
+    @if(user!=null && user.Id==Model.BookerUserId)
     {
         <a asp-action="Edit" asp-route-id="@Model.ISBN">Edit</a>
         <a asp-action="Delete" asp-route-id="@Model.ISBN">Delete</a>

@@ -9,17 +9,30 @@ namespace Booker.Models
     public class Book
     {
         [Key]
-        public int ISBN { get; set; }
+        [Required]
+        [MaxLength(13)]
+        [MinLength(13)]
+        [RegularExpression("^[0-9]*$",ErrorMessage = "ISBN must be numeric")]
+        public string ISBN { get; set; }
+        [Required]
         public string Title { get; set; }
-        public string BookerUserId{ get; set; }
-        public string Author{ get; set; }
+        [Required]
+        public string BookerUserId { get; set; }
+        [Required]
+        public string Author { get; set; }
+        [Required]
         public string Editor { get; set; }
+        [Required]
         public string Description { get; set; }
+        [Required]
         [DataType(DataType.Date)]
         public DateTime ReleaseDate { get; set; }
         public string Image { get; set; }
-        public string Categories{ get; set; }
-        public string BuyLink{ get; set; }
+        [Required]
+        [Display(Name = "Categories (separated by a comma)")]
+        public string Categories { get; set; }
+        [Required]
+        public string BuyLink { get; set; }
 
     }
 }

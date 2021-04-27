@@ -15,7 +15,6 @@ namespace Booker.Areas.Identity.Data
         public string Avatar { get; set; }
         [PersonalData]
         public bool IsAuthor { get; set; }
-        public List<Book> Books { get; set; }
         [PersonalData]
         public string FirstName { get; set; }
         [PersonalData]
