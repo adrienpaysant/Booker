@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Booker.Models.Comments>
+@using Microsoft.AspNetCore.Identity
+@using Booker.Areas.Identity.Data
+
+@inject UserManager<BookerUser> UserManager
+
+@{
+    BookerUser user = await UserManager.GetUserAsync(User);
+}
+
+<div>
+    @foreach(var item in Model){
+        <hr />
+        
+    }
+</div>

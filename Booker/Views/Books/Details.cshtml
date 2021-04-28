@@ -78,6 +78,14 @@
         </dd>
     </dl>
 </div>
+<div>
+    @if(user != null && user.Id == Model.BookerUserId)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.ISBN">Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model.ISBN">Delete</a>
+    }
+    <a asp-action="Index">Back to List</a>
+</div>
 @if(user != null && user.Id != Model.BookerUserId)
 {
     <div>
@@ -98,12 +106,17 @@
             </div>
         </form>
     </div>
+    <div>
+        <form asp-action="CreateComment">
+            <input type="hidden" name="bookId" value="@Model.ISBN" />
+            <div class="form-group">
+                <label for="content" class="control-label">Add a Comment : </label><br />
+                <textarea class="form-control" name="content" cols="50" rows="4" placeholder="Type it here"></textarea><br />
+                <input type="submit" value="Comment" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
 }
 <div>
-    @if(user != null && user.Id == Model.BookerUserId)
-    {
-        <a asp-action="Edit" asp-route-id="@Model.ISBN">Edit</a>
-        <a asp-action="Delete" asp-route-id="@Model.ISBN">Delete</a>
-    }
-    <a asp-action="Index">Back to List</a>
+    <partial name="../Comments/Comments.cshtml" />
 </div>

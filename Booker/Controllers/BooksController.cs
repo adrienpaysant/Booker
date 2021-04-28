@@ -151,6 +151,7 @@ namespace Booker.Controllers
             return View(book);
         }
 
+        //Rating
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Details(string id,int rating)
@@ -285,6 +286,58 @@ namespace Booker.Controllers
             _context.Book.Remove(book);
             await _context.SaveChangesAsync();
             DeleteImage(id);
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateComment(string bookId,string content)
+        {
+            Comments comment = null;
+            if(ModelState.IsValid)
+            {
+                comment = new Comments
+                {
+                    BookId = bookId,
+                    Content = content,
+                    PublicationDate = DateTime.Now,
+                    BookerUserId = _userManager.GetUserId(User)
+                };
+                _context.Add(comment);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditComment(int id,string bookId,string content)
+        {
+            Comments comment = null;
+            if(ModelState.IsValid)
+            {
+                comment = new Comments
+                {
+                    Id = id,
+                    BookId = bookId,
+                    Content = content,
+                    PublicationDate = DateTime.Now,
+                    BookerUserId = _userManager.GetUserId(User)
+                };
+                _context.Comments.Update(comment);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteComment(string id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var comment = await _context.Comments.FindAsync(id);
+            _context.Comments.Remove(comment);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
