@@ -10,14 +10,15 @@ using Booker.Models;
 
 namespace Booker.Data
 {
-    public class BookerContextId : IdentityDbContext<BookerUser>
+    public class BookerContextId: IdentityDbContext<BookerUser>
     {
         public BookerContextId(DbContextOptions<BookerContextId> options)
             : base(options)
         {
         }
         public DbSet<Book> Book { get; set; }
-
+        public DbSet<Rating> Rating { get; set; }
+        public DbSet<Comments> Comments { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

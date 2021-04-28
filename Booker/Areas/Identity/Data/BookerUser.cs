@@ -19,6 +19,7 @@ namespace Booker.Areas.Identity.Data
         public string FirstName { get; set; }
         [PersonalData]
         public string LastName { get; set; }
+
         public string GetFullName(){
             return $"{FirstName} {LastName}";
         }

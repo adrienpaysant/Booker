@@ -10,7 +10,7 @@ using Booker.Data;
 using Booker.Models;
 using Booker.Areas.Identity.Data;
 using Booker.ViewModels;
-using System.Web.Helpers;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 
@@ -57,21 +57,34 @@ namespace Booker.Controllers
         // GET: Books/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            BookerUser user = await _userManager.GetUserAsync(User);
-            if(user != null) ViewData["IsAuthor"] = user.IsAuthor.ToString();
             if(id == null)
             {
                 return NotFound();
             }
-
+            BookerUser user = await _userManager.GetUserAsync(User);
+            if(user == null) return NotFound();
+            ViewData["IsAuthor"] = user.IsAuthor.ToString();
+            try
+            {
+                Rating oldRating = _context.Rating.Where(r => r.BookerUserId.Equals(user.Id) && r.BookId.Equals(id)).First();
+                ViewBag.rating = oldRating.Value;
+            }
+            catch { }
+            try
+            {
+                List<Rating> ratingList = _context.Rating.Where(r => r.BookId.Equals(id)).ToList();
+                ViewBag.ratingSum = ((float)ratingList.Sum(r => r.Value)) / ratingList.Count;
+            }
+            catch { }
             var book = await _context.Book
                 .FirstOrDefaultAsync(m => m.ISBN.Equals(id));
             if(book == null)
             {
                 return NotFound();
             }
-
-            return View(book);
+            List<Comments> comments = _context.Comments.ToList();
+            comments.Reverse();
+            return View(new BookCommentViewModel() { Book = book,Comments = comments});
         }
 
         // GET: Books/Create
@@ -99,9 +112,16 @@ namespace Booker.Controllers
 
         static private void DeleteImage(string ISBN)
         {
-            string[] files = Directory.GetFiles("wwwroot/img/",ISBN+".*",SearchOption.TopDirectoryOnly);
+            string[] files = Directory.GetFiles("wwwroot/img/",ISBN + ".*",SearchOption.TopDirectoryOnly);
             if(files.Length == 1) System.IO.File.Delete(files[0]);
         }
+
+        static private void ChangeImageId(string id,string ISBN)
+        {
+            string[] files = Directory.GetFiles("wwwroot/img/",id + ".*",SearchOption.TopDirectoryOnly);
+            if(files.Length == 1) System.IO.File.Move(files[0],files[0].Replace(id,ISBN));
+        }
+
         // POST: Books/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -132,6 +152,39 @@ namespace Booker.Controllers
             return View(book);
         }
 
+        //Rating
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Details(string id,int rating)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            Book book = await _context.Book.FindAsync(id);
+            if(book == null)
+            {
+                return NotFound();
+            }
+            string currentUserId = _userManager.GetUserId(User);
+            Rating newRating = new Rating
+            {
+                BookerUserId = currentUserId,
+                BookId = id,
+                Value = rating
+            };
+            try
+            {
+                Rating oldRating = _context.Rating.Where(r => r.BookerUserId.Equals(currentUserId) && r.BookId.Equals(id)).First();
+                _context.Rating.Remove(oldRating);
+            }
+            catch { }
+
+            _context.Rating.Add(newRating);
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details));
+        }
         // GET: Books/Edit/5
         public async Task<IActionResult> Edit(string? id)
         {
@@ -158,7 +211,18 @@ namespace Booker.Controllers
             Book book = null;
             if(!id.Equals(vm.ISBN))
             {
-                return NotFound();
+                if(id != null)
+                {
+                    var bookToDelete = await _context.Book.FindAsync(id);
+                    _context.Book.Remove(bookToDelete);
+                    await _context.SaveChangesAsync();
+                    ChangeImageId(id,vm.ISBN);
+                    return await Create(vm);
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
 
             if(ModelState.IsValid)
@@ -224,6 +288,58 @@ namespace Booker.Controllers
             await _context.SaveChangesAsync();
             DeleteImage(id);
             return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateComment(string id,string content)
+        {
+            Comments comment = null;
+            if(ModelState.IsValid)
+            {
+                comment = new Comments
+                {
+                    BookId = id,
+                    Content = content,
+                    PublicationDate = DateTime.Now,
+                    BookerUserId = _userManager.GetUserId(User)
+                };
+                _context.Add(comment);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Details),new { id=id});
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditComment(int commentId,string id,string content)
+        {
+            Comments comment = null;
+            if(ModelState.IsValid)
+            {
+                comment = new Comments
+                {
+                    Id = commentId,
+                    BookId = id,
+                    Content = content,
+                    PublicationDate = DateTime.Now,
+                    BookerUserId = _userManager.GetUserId(User)
+                };
+                _context.Comments.Update(comment);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Details),new { id = id });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteComment(int commentId,string id)
+        {
+            if(commentId == null)
+            {
+                return NotFound();
+            }
+            var comment = await _context.Comments.FindAsync(commentId);
+            _context.Comments.Remove(comment);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details),new { id = id });
         }
 
         private bool BookExists(string id)
