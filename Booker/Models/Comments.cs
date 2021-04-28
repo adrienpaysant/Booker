@@ -8,7 +8,7 @@ namespace Booker.Models
 {
     public class Comments
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         [Required]
         public string Content { get; set; }
         [Required]
