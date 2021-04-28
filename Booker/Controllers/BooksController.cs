@@ -82,8 +82,9 @@ namespace Booker.Controllers
             {
                 return NotFound();
             }
-
-            return View(book);
+            List<Comments> comments = _context.Comments.ToList();
+            comments.Reverse();
+            return View(new BookCommentViewModel() { Book = book,Comments = comments});
         }
 
         // GET: Books/Create
@@ -290,14 +291,14 @@ namespace Booker.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateComment(string bookId,string content)
+        public async Task<IActionResult> CreateComment(string id,string content)
         {
             Comments comment = null;
             if(ModelState.IsValid)
             {
                 comment = new Comments
                 {
-                    BookId = bookId,
+                    BookId = id,
                     Content = content,
                     PublicationDate = DateTime.Now,
                     BookerUserId = _userManager.GetUserId(User)
@@ -305,19 +306,19 @@ namespace Booker.Controllers
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details),new { id=id});
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditComment(int id,string bookId,string content)
+        public async Task<IActionResult> EditComment(int commentId,string id,string content)
         {
             Comments comment = null;
             if(ModelState.IsValid)
             {
                 comment = new Comments
                 {
-                    Id = id,
-                    BookId = bookId,
+                    Id = commentId,
+                    BookId = id,
                     Content = content,
                     PublicationDate = DateTime.Now,
                     BookerUserId = _userManager.GetUserId(User)
@@ -325,20 +326,20 @@ namespace Booker.Controllers
                 _context.Comments.Update(comment);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details),new { id = id });
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteComment(string id)
+        public async Task<IActionResult> DeleteComment(int commentId,string id)
         {
-            if(id == null)
+            if(commentId == null)
             {
                 return NotFound();
             }
-            var comment = await _context.Comments.FindAsync(id);
+            var comment = await _context.Comments.FindAsync(commentId);
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details),new { id = id });
         }
 
         private bool BookExists(string id)
