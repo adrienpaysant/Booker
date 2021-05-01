@@ -1312,6 +1312,19 @@
           "lib/netstandard1.0/_._": {}
         }
       },
+      "SendGrid/9.23.0": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "9.0.1",
+          "starkbank-ecdsa": "[1.3.1, 2.0.0)"
+        },
+        "compile": {
+          "lib/netstandard2.0/SendGrid.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/SendGrid.dll": {}
+        }
+      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.0.4": {
         "type": "package",
         "dependencies": {
@@ -1413,6 +1426,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll": {}
+        }
+      },
+      "starkbank-ecdsa/1.3.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/StarkbankEcdsa.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/StarkbankEcdsa.dll": {}
         }
       },
       "System.Buffers/4.5.0": {
@@ -4692,6 +4714,29 @@
         "runtime.native.system.nuspec"
       ]
     },
+    "SendGrid/9.23.0": {
+      "sha512": "Vr4P5on2qGF66OKoLz9HNudGFkZw22lEjWU3vaKWqEK00ow1yWtr3WPk9p5YKjB6ARenT9VpzEfYIfS8b0BXWA==",
+      "type": "package",
+      "path": "sendgrid/9.23.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/SendGrid.dll",
+        "lib/net40/SendGrid.pdb",
+        "lib/net40/SendGrid.xml",
+        "lib/net452/SendGrid.dll",
+        "lib/net452/SendGrid.pdb",
+        "lib/net452/SendGrid.xml",
+        "lib/netstandard1.3/SendGrid.dll",
+        "lib/netstandard1.3/SendGrid.pdb",
+        "lib/netstandard1.3/SendGrid.xml",
+        "lib/netstandard2.0/SendGrid.dll",
+        "lib/netstandard2.0/SendGrid.pdb",
+        "lib/netstandard2.0/SendGrid.xml",
+        "sendgrid.9.23.0.nupkg.sha512",
+        "sendgrid.nuspec"
+      ]
+    },
     "SQLitePCLRaw.bundle_e_sqlite3/2.0.4": {
       "sha512": "f5U8Sw0lRym8tTraJ2zm6OqcDrcrEVvcKDtYlKSLs3Ox9SerkwkPXiFXb/uiW0g2tJdUw6oBhsxI/l5DoRxXMg==",
       "type": "package",
@@ -4763,6 +4808,22 @@
         "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll",
         "sqlitepclraw.provider.dynamic_cdecl.2.0.4.nupkg.sha512",
         "sqlitepclraw.provider.dynamic_cdecl.nuspec"
+      ]
+    },
+    "starkbank-ecdsa/1.3.1": {
+      "sha512": "YV20cpN7WgEiaIuIv8ZQPgkDVximP6gHCMCTgy6+IwArDHmuDVQLJ15Qwwmgd5woETnogquD+gu4SXDZW/ffog==",
+      "type": "package",
+      "path": "starkbank-ecdsa/1.3.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/StarkbankEcdsa.dll",
+        "lib/net452/StarkbankEcdsa.dll",
+        "lib/netstandard1.3/StarkbankEcdsa.dll",
+        "lib/netstandard2.0/StarkbankEcdsa.dll",
+        "lib/netstandard2.1/StarkbankEcdsa.dll",
+        "starkbank-ecdsa.1.3.1.nupkg.sha512",
+        "starkbank-ecdsa.nuspec"
       ]
     },
     "System.Buffers/4.5.0": {
@@ -8445,27 +8506,33 @@
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.5",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.2",
       "Newtonsoft.Json >= 13.0.1",
-      "Octokit >= 0.50.0"
+      "Octokit >= 0.50.0",
+      "SendGrid >= 9.23.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\adrien.paysant\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\Grégoire\\.nuget\\packages\\": {},
+    "F:\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\xampp\\htdocs\\Booker\\Booker\\Booker.csproj",
+      "projectUniqueName": "F:\\DEV\\Booker\\Booker\\Booker\\Booker.csproj",
       "projectName": "Booker",
-      "projectPath": "C:\\xampp\\htdocs\\Booker\\Booker\\Booker.csproj",
-      "packagesPath": "C:\\Users\\adrien.paysant\\.nuget\\packages\\",
-      "outputPath": "C:\\xampp\\htdocs\\Booker\\Booker\\obj\\",
+      "projectPath": "F:\\DEV\\Booker\\Booker\\Booker\\Booker.csproj",
+      "packagesPath": "C:\\Users\\Grégoire\\.nuget\\packages\\",
+      "outputPath": "F:\\DEV\\Booker\\Booker\\Booker\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        "F:\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\adrien.paysant\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Grégoire\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -8547,6 +8614,10 @@
           "Octokit": {
             "target": "Package",
             "version": "[0.50.0, )"
+          },
+          "SendGrid": {
+            "target": "Package",
+            "version": "[9.23.0, )"
           }
         },
         "imports": [
@@ -8567,7 +8638,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }
