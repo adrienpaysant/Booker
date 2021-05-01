@@ -61,10 +61,10 @@ namespace Booker.Controllers
 
             // Date default values
             if (!fromDate.HasValue)
-                fromDate = (from b in _context.Book select b.ReleaseDate).Min();
+                fromDate = (from b in books select b.ReleaseDate).Min();
 
             if (!toDate.HasValue)
-                toDate = (from b in _context.Book select b.ReleaseDate).Max();
+                toDate = (from b in books select b.ReleaseDate).Max();
 
             // Filter by date
             books = books.Where(b => b.ReleaseDate >= fromDate && b.ReleaseDate <= toDate);
