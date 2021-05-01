@@ -17,10 +17,19 @@ using System.IO;
 
 namespace Booker.Controllers
 {
+    enum Order : ushort
+    {
+        TITLE_ASC,
+        TITLE_DESC,
+        ConnectionLost = 100,
+        OutlierReading = 200
+    }
+
     public class BooksController: Controller
     {
         private readonly BookerContextId _context;
         private readonly UserManager<BookerUser> _userManager;
+        private readonly string[] order = { "Title Ascending", "Title Descending", "Date Ascending", "Date Descending" };
 
         public BooksController(BookerContextId context,UserManager<BookerUser> userManager)
         {
@@ -29,21 +38,57 @@ namespace Booker.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index(string bookCategory,string searchString)
+        public async Task<IActionResult> Index(string bookCategory, string searchString, string orderString, DateTime? fromDate, DateTime? toDate)
         {
             var books = from b in _context.Book select b;
 
-            if (!String.IsNullOrEmpty(searchString))
-                books = books.Where(s => EF.Functions.Like(s.Title,$"%{searchString}%"));
+            // Sort 
+            switch (orderString)
+            {
+                case "Title Descending":
+                    books = books.OrderByDescending(b => b.Title);
+                    break;
+                case "Date Ascending":
+                    books = books.OrderBy(b => b.ReleaseDate);
+                    break;
+                case "Date Descending":
+                    books = books.OrderByDescending(b => b.ReleaseDate);
+                    break;
+                default:
+                    books = books.OrderBy(b => b.Title);
+                    break;
+            }
 
+            // Date default values
+            if (!fromDate.HasValue)
+                fromDate = (from b in _context.Book select b.ReleaseDate).Min();
+
+            if (!toDate.HasValue)
+                toDate = (from b in _context.Book select b.ReleaseDate).Max();
+
+            // Filter by date
+            books = books.Where(b => b.ReleaseDate >= fromDate && b.ReleaseDate <= toDate);
+
+            // Filter with text
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                books = books.Where(s =>
+                    EF.Functions.Like(s.Title, $"%{searchString}%") ||
+                    EF.Functions.Like(s.Author, $"%{searchString}%") ||
+                    EF.Functions.Like(s.Editor, $"%{searchString}%"));
+            }
+
+            // Filter by categories
             var booksList = await books.ToListAsync();
-            if (!string.IsNullOrEmpty(bookCategory)) { 
+            if (!string.IsNullOrEmpty(bookCategory)) 
+            { 
                 booksList.Clear();
                 foreach (var book in books)
                     if (book.CategoriesList().Contains(bookCategory))
                         booksList.Add(book);
             }
 
+            // Get all categories
             var categoriesList = new List<string>();               
             foreach (var book in books)
                 foreach (var category in book.CategoriesList())
@@ -53,7 +98,10 @@ namespace Booker.Controllers
             var movieGenreVM = new BookCategoryViewModel
             {
                 Categories = new SelectList(categoriesList),
-                Books = booksList
+                Books = booksList,
+                Order = new SelectList(order),
+                FromDate = fromDate.GetValueOrDefault(),
+                ToDate = toDate.GetValueOrDefault()
             };
 
             BookerUser user = await _userManager.GetUserAsync(User);

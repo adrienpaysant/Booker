@@ -11,7 +11,11 @@ namespace Booker.ViewModels
     {
         public List<Book> Books { get; set; }
         public SelectList Categories { get; set; }
+        public SelectList Order { get; set; }
         public string BookCategory { get; set; }
         public string SearchString { get; set; }
+        public string OrderString { get; set; }
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
     }
 }
