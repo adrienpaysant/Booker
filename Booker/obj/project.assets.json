@@ -8533,23 +8533,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Joris\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\Grégoire\\.nuget\\packages\\": {},
+    "F:\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Joris\\Desktop\\3\\.NET\\Booker\\Booker\\Booker.csproj",
+      "projectUniqueName": "F:\\DEV\\Booker\\Booker\\Booker\\Booker.csproj",
       "projectName": "Booker",
-      "projectPath": "C:\\Users\\Joris\\Desktop\\3\\.NET\\Booker\\Booker\\Booker.csproj",
-      "packagesPath": "C:\\Users\\Joris\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Joris\\Desktop\\3\\.NET\\Booker\\Booker\\obj\\",
+      "projectPath": "F:\\DEV\\Booker\\Booker\\Booker\\Booker.csproj",
+      "packagesPath": "C:\\Users\\Grégoire\\.nuget\\packages\\",
+      "outputPath": "F:\\DEV\\Booker\\Booker\\Booker\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
+        "F:\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Joris\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Grégoire\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -8655,7 +8660,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   },
@@ -8664,7 +8669,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Microsoft.AspNet.Razor 3.2.7' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.",
+      "message": "Le package 'Microsoft.AspNet.Razor 3.2.7' a été restauré en utilisant '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' au lieu du framework cible du projet 'net5.0'. Ce package n'est peut-être pas totalement compatible avec votre projet.",
       "libraryId": "Microsoft.AspNet.Razor",
       "targetGraphs": [
         "net5.0"
@@ -8674,7 +8679,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Microsoft.AspNet.WebPages 3.2.7' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.",
+      "message": "Le package 'Microsoft.AspNet.WebPages 3.2.7' a été restauré en utilisant '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' au lieu du framework cible du projet 'net5.0'. Ce package n'est peut-être pas totalement compatible avec votre projet.",
       "libraryId": "Microsoft.AspNet.WebPages",
       "targetGraphs": [
         "net5.0"
@@ -8684,7 +8689,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Microsoft.Web.Infrastructure 1.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0'. This package may not be fully compatible with your project.",
+      "message": "Le package 'Microsoft.Web.Infrastructure 1.0.0' a été restauré en utilisant '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' au lieu du framework cible du projet 'net5.0'. Ce package n'est peut-être pas totalement compatible avec votre projet.",
       "libraryId": "Microsoft.Web.Infrastructure",
       "targetGraphs": [
         "net5.0"

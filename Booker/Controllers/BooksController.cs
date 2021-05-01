@@ -31,23 +31,31 @@ namespace Booker.Controllers
         // GET: Books
         public async Task<IActionResult> Index(string bookCategory,string searchString)
         {
-            IQueryable<string> genreQuery = from b in _context.Book
-                                            orderby b.Categories
-                                            select b.Categories;
-
             var books = from b in _context.Book select b;
 
-            if(!String.IsNullOrEmpty(searchString))
+            if (!String.IsNullOrEmpty(searchString))
                 books = books.Where(s => EF.Functions.Like(s.Title,$"%{searchString}%"));
 
-            if(!string.IsNullOrEmpty(bookCategory))
-                books = books.Where(x => x.Categories == bookCategory);
+            var booksList = await books.ToListAsync();
+            if (!string.IsNullOrEmpty(bookCategory)) { 
+                booksList.Clear();
+                foreach (var book in books)
+                    if (book.CategoriesList().Contains(bookCategory))
+                        booksList.Add(book);
+            }
 
-            var movieGenreVM = new BookGenreViewModel
+            var categoriesList = new List<string>();               
+            foreach (var book in books)
+                foreach (var category in book.CategoriesList())
+                    if (!categoriesList.Contains(category))
+                        categoriesList.Add(category);
+
+            var movieGenreVM = new BookCategoryViewModel
             {
-                Categories = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                Books = await books.ToListAsync()
+                Categories = new SelectList(categoriesList),
+                Books = booksList
             };
+
             BookerUser user = await _userManager.GetUserAsync(User);
             if(user != null) ViewData["IsAuthor"] = user.IsAuthor.ToString();
 

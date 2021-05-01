@@ -31,6 +31,11 @@ namespace Booker.Models
         [Required]
         [Display(Name = "Categories (separated by a comma)")]
         public string Categories { get; set; }
+
+        public List<string> CategoriesList(){
+            return Categories.Split(',').Select(p => p.Trim()).ToList(); 
+        }
+
         [Required]
         public string BuyLink { get; set; }
     }
