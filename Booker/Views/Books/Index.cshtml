@@ -1,5 +1,5 @@
 ﻿
-@model Booker.Models.BookGenreViewModel
+@model Booker.ViewModels.BookCategoryViewModel
 
 @{
     ViewData["Title"] = "List";
@@ -7,24 +7,68 @@
 
 <h1>List of all Books</h1>
 
-<form asp-controller="Books" asp-action="Index" method="get">
-    <p>
-        <select asp-for="BookCategory" asp-items="Model.Categories">
+<form asp-controller="Books" asp-action="Index" method="get" style="display:flex; justify-content:space-between; padding: 20px 0;">
+    <div>
+        <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+
+        <br />
+        Category: <select asp-for="BookCategory" asp-items="Model.Categories">
             <option value="">All</option>
         </select>
 
-        Title: <input type="text" asp-for="SearchString" />
-        <input type="submit" value="Filter" />
-    </p>
+        <span>Start Date :</span> <input type="date" asp-for="FromDate" />
+        <span>End Date :</span> <input type="date" asp-for="ToDate" />
+    </div>
+
+    <div>
+        <select asp-for="OrderString" asp-items="Model.Order"></select>
+    </div>
 </form>
 
-<div class="d-flex flex-wrap" style="text-align:center">
-    @foreach(var item in Model.Books)
-    {
-        <a asp-action="Details" asp-route-id="@item.ISBN" class="m-2">
-            <img src="@item.Image" style="width:15vw;max-height:50vh" />
-            <p>@Html.DisplayFor(modelItem => item.Title)</p>
-        </a>
-    }
-</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books[0].Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books[0].ReleaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Books[0].Categories)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Books)
+        {
+            <tr>
+                <td>
+                    <img src="@item.Image" style="width: 95px; height: 130px; object-fit: cover; border-radius: 8px;" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReleaseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categories)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.ISBN">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 

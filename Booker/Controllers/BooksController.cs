@@ -10,17 +10,24 @@ using Booker.Data;
 using Booker.Models;
 using Booker.Areas.Identity.Data;
 using Booker.ViewModels;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using System.IO;
 
 
 namespace Booker.Controllers
 {
+    enum Order: ushort
+    {
+        TITLE_ASC,
+        TITLE_DESC,
+        ConnectionLost = 100,
+        OutlierReading = 200
+    }
+
     public class BooksController: Controller
     {
         private readonly BookerContextId _context;
         private readonly UserManager<BookerUser> _userManager;
+        private readonly string[] order = { "Title Ascending","Title Descending","Date Ascending","Date Descending" };
 
         public BooksController(BookerContextId context,UserManager<BookerUser> userManager)
         {
@@ -29,30 +36,97 @@ namespace Booker.Controllers
         }
 
         // GET: Books
-        public async Task<IActionResult> Index(string bookCategory,string searchString)
+        public async Task<IActionResult> Index(string bookCategory,string searchString,string orderString,DateTime? fromDate,DateTime? toDate)
         {
-            IQueryable<string> genreQuery = from b in _context.Book
-                                            orderby b.Categories
-                                            select b.Categories;
-
             var books = from b in _context.Book select b;
 
-            if(!String.IsNullOrEmpty(searchString))
-                books = books.Where(s => EF.Functions.Like(s.Title,$"%{searchString}%"));
-
-            if(!string.IsNullOrEmpty(bookCategory))
-                books = books.Where(x => x.Categories == bookCategory);
-
-            var movieGenreVM = new BookGenreViewModel
+            // Sort 
+            books = orderString switch
             {
-                Categories = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                Books = await books.ToListAsync()
+                "Title Descending" => books.OrderByDescending(b => b.Title),
+                "Date Ascending" => books.OrderBy(b => b.ReleaseDate),
+                "Date Descending" => books.OrderByDescending(b => b.ReleaseDate),
+                _ => books.OrderBy(b => b.Title),
             };
+
+            // Date default values
+            if(!fromDate.HasValue)
+                fromDate = (from b in books select b.ReleaseDate).Min();
+
+            if(!toDate.HasValue)
+                toDate = (from b in books select b.ReleaseDate).Max();
+
+            // Filter by date
+            books = books.Where(b => b.ReleaseDate >= fromDate && b.ReleaseDate <= toDate);
+
+            // Filter with text
+            if(!String.IsNullOrEmpty(searchString))
+            {
+                books = books.Where(s =>
+                    EF.Functions.Like(s.Title,$"%{searchString}%") ||
+                    EF.Functions.Like(s.Author,$"%{searchString}%") ||
+                    EF.Functions.Like(s.Editor,$"%{searchString}%"));
+            }
+
+            // Filter by categories
+            var booksList = await books.ToListAsync();
+            if(!string.IsNullOrEmpty(bookCategory))
+            {
+                booksList.Clear();
+                foreach(var book in books)
+                    if(book.CategoriesList().Contains(bookCategory))
+                        booksList.Add(book);
+            }
+
+            // Get all categories
+            var categoriesList = new List<string>();
+            foreach(var book in books)
+                foreach(var category in book.CategoriesList())
+                    if(!categoriesList.Contains(category))
+                        categoriesList.Add(category);
+
+            var bookGenreVM = new BookCategoryViewModel
+            {
+                Categories = new SelectList(categoriesList),
+                Books = booksList,
+                Order = new SelectList(order),
+                FromDate = fromDate.GetValueOrDefault(),
+                ToDate = toDate.GetValueOrDefault()
+            };
+
             BookerUser user = await _userManager.GetUserAsync(User);
             if(user != null) ViewData["IsAuthor"] = user.IsAuthor.ToString();
 
-            return View(movieGenreVM);
+            return View(bookGenreVM);
 
+        }
+        public async Task<IActionResult> MyBooks()
+        {
+            BookerUser user = await _userManager.GetUserAsync(User);
+            var books = _context.Book.Where(b => b.BookerUserId == user.Id);
+
+            // Sort 
+            books = books.OrderByDescending(b => b.ReleaseDate);
+
+            // Get all categories
+            var categoriesList = new List<string>();
+            foreach(var book in books)
+                foreach(var category in book.CategoriesList())
+                    if(!categoriesList.Contains(category))
+                        categoriesList.Add(category);
+
+            var bookGenreVM = new BookCategoryViewModel
+            {
+                Categories = new SelectList(categoriesList),
+                Books = books.AsEnumerable().ToList(),
+                Order = new SelectList(order),
+                FromDate = (from b in books select b.ReleaseDate).Min(),
+                ToDate = (from b in books select b.ReleaseDate).Max()
+        };
+
+            if(user != null) ViewData["IsAuthor"] = user.IsAuthor.ToString();
+
+            return View("Index",bookGenreVM);
         }
         // GET: Books/Details/5
         public async Task<IActionResult> Details(string id)
@@ -84,7 +158,7 @@ namespace Booker.Controllers
             }
             List<Comments> comments = _context.Comments.ToList();
             comments.Reverse();
-            return View(new BookCommentViewModel() { Book = book,Comments = comments});
+            return View(new BookCommentViewModel() { Book = book,Comments = comments });
         }
 
         // GET: Books/Create
@@ -186,7 +260,7 @@ namespace Booker.Controllers
             return RedirectToAction(nameof(Details));
         }
         // GET: Books/Edit/5
-        public async Task<IActionResult> Edit(string? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if(id == null)
             {
@@ -306,7 +380,7 @@ namespace Booker.Controllers
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction(nameof(Details),new { id=id});
+            return RedirectToAction(nameof(Details),new { id });
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -326,11 +400,11 @@ namespace Booker.Controllers
                 _context.Comments.Update(comment);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction(nameof(Details),new { id = id });
+            return RedirectToAction(nameof(Details),new { id });
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteComment(int commentId,string id)
+        public async Task<IActionResult> DeleteComment(int? commentId,string id)
         {
             if(commentId == null)
             {
@@ -339,7 +413,7 @@ namespace Booker.Controllers
             var comment = await _context.Comments.FindAsync(commentId);
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details),new { id = id });
+            return RedirectToAction(nameof(Details),new { id });
         }
 
         private bool BookExists(string id)

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
-using Booker.Areas.Identity.Data;
 namespace Booker.Models
 {
     public class Book
@@ -31,6 +29,11 @@ namespace Booker.Models
         [Required]
         [Display(Name = "Categories (separated by a comma)")]
         public string Categories { get; set; }
+
+        public List<string> CategoriesList(){
+            return Categories.Split(',').Select(p => p.Trim()).ToList(); 
+        }
+
         [Required]
         public string BuyLink { get; set; }
     }
