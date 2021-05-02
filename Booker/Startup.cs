@@ -19,6 +19,8 @@ using System.Security.Claims;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Booker.Services;
 
 namespace Booker
 {
@@ -35,9 +37,13 @@ namespace Booker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-           /* services.AddDbContext<BookerContextId>(options =>
-                        options.UseSqlServer(Configuration.GetConnectionString("BookerDB")));*/
+            /* services.AddDbContext<BookerContextId>(options =>
+                         options.UseSqlServer(Configuration.GetConnectionString("BookerDB")));*/
             //  services.AddDefaultIdentity<User>().AddRoles<IdentityRole>().AddEntityFrameworkStores<BookerContext>();
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+
             services.AddRazorPages();
             services.AddAuthentication()
             .AddGoogle(opts =>

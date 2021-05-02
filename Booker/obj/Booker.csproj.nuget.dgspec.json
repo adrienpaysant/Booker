@@ -103,6 +103,10 @@
             "Octokit": {
               "target": "Package",
               "version": "[0.50.0, )"
+            },
+            "SendGrid": {
+              "target": "Package",
+              "version": "[9.23.0, )"
             }
           },
           "imports": [
