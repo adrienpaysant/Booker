@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Booker.Models;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Booker.ViewModels
 {
