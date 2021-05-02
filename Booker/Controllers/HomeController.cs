@@ -13,17 +13,27 @@ namespace Booker.Controllers
         {
             _logger = logger;
         }
-
+        /// <summary>
+        /// Return Home page
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View();
         }
-
+        /// <summary>
+        /// Return Privacy page
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Privacy()
         {
             return View();
         }
 
+        /// <summary>
+        /// Return Error
+        /// </summary>
+        /// <returns></returns>
         [ResponseCache(Duration = 0,Location = ResponseCacheLocation.None,NoStore = true)]
         public IActionResult Error()
         {

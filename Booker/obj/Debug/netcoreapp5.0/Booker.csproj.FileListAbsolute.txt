@@ -696,3 +696,5 @@ F:\DEV\Booker\Booker\Booker\obj\Debug\netcoreapp5.0\Booker.pdb
 F:\DEV\Booker\Booker\Booker\obj\Debug\netcoreapp5.0\Booker.genruntimeconfig.cache
 F:\DEV\Booker\Booker\Booker\bin\Debug\netcoreapp5.0\SendGrid.dll
 F:\DEV\Booker\Booker\Booker\bin\Debug\netcoreapp5.0\StarkbankEcdsa.dll
+C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\SendGrid.dll
+C:\Users\Joris\Desktop\3\.NET\Booker\Booker\bin\Debug\netcoreapp5.0\StarkbankEcdsa.dll

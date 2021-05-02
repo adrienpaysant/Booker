@@ -35,7 +35,15 @@ namespace Booker.Controllers
             _userManager = userManager;
         }
 
-        // GET: Books
+        /// <summary>
+        /// Get Books page with a list of book filtered by the user via the search filters
+        /// </summary>
+        /// <param name="bookCategory"></param>
+        /// <param name="searchString"></param>
+        /// <param name="orderString"></param>
+        /// <param name="fromDate"></param>
+        /// <param name="toDate"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Index(string bookCategory,string searchString,string orderString,DateTime? fromDate,DateTime? toDate)
         {
             var books = from b in _context.Book select b;
@@ -100,11 +108,18 @@ namespace Booker.Controllers
             return View(bookGenreVM);
 
         }
+        /// <summary>
+        /// Get all the books written by the current user
+        /// Get all the books written by the current user
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> MyBooks()
         {
             BookerUser user = await _userManager.GetUserAsync(User);
             var books = _context.Book.Where(b => b.BookerUserId == user.Id);
 
+            if(books.AsEnumerable().ToList().Count < 1)
+                books = _context.Book;
             // Sort 
             books = books.OrderByDescending(b => b.ReleaseDate);
 
@@ -122,13 +137,18 @@ namespace Booker.Controllers
                 Order = new SelectList(order),
                 FromDate = (from b in books select b.ReleaseDate).Min(),
                 ToDate = (from b in books select b.ReleaseDate).Max()
-        };
+            };
 
             if(user != null) ViewData["IsAuthor"] = user.IsAuthor.ToString();
 
             return View("Index",bookGenreVM);
         }
         // GET: Books/Details/5
+        /// <summary>
+        /// Get books details 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Details(string id)
         {
             if(id == null)
@@ -167,6 +187,11 @@ namespace Booker.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Upload image to wwwroot/img and return the path
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         static private string UploadedFile(BookViewModel model)
         {
             string filePath = null;
@@ -190,6 +215,11 @@ namespace Booker.Controllers
             if(files.Length == 1) System.IO.File.Delete(files[0]);
         }
 
+        /// <summary>
+        /// Change image Id when the book image is updated
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="ISBN"></param>
         static private void ChangeImageId(string id,string ISBN)
         {
             string[] files = Directory.GetFiles("wwwroot/img/",id + ".*",SearchOption.TopDirectoryOnly);
@@ -226,7 +256,12 @@ namespace Booker.Controllers
             return View(book);
         }
 
-        //Rating
+        /// <summary>
+        /// Rate a book
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="rating"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Details(string id,int rating)
@@ -363,6 +398,13 @@ namespace Booker.Controllers
             DeleteImage(id);
             return RedirectToAction(nameof(Index));
         }
+
+        /// <summary>
+        /// Create Comment
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateComment(string id,string content)
@@ -382,6 +424,14 @@ namespace Booker.Controllers
             }
             return RedirectToAction(nameof(Details),new { id });
         }
+
+        /// <summary>
+        /// Edit comment
+        /// </summary>
+        /// <param name="commentId"></param>
+        /// <param name="id"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditComment(int commentId,string id,string content)
@@ -402,6 +452,13 @@ namespace Booker.Controllers
             }
             return RedirectToAction(nameof(Details),new { id });
         }
+
+        /// <summary>
+        /// Delete Comment
+        /// </summary>
+        /// <param name="commentId"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteComment(int? commentId,string id)
