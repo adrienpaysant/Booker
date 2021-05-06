@@ -84,6 +84,7 @@ namespace Booker.Controllers
                 foreach(var category in book.CategoriesList())
                     if(!categoriesList.Contains(category))
                         categoriesList.Add(category);
+            categoriesList.Sort();
 
             var bookGenreVM = new BookCategoryViewModel
             {
