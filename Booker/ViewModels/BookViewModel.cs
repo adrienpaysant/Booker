@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+
+/// <summary>
+/// Used To create/edit Book 
+/// </summary>
 namespace Booker.ViewModels
 {
     public class BookViewModel

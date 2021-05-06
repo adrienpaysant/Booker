@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace Booker.ViewModels
 {
+    /// <summary>
+    /// return the search fields and the list of books
+    /// </summary>
     public class BookCategoryViewModel
     {
         public List<Book> Books { get; set; }
