@@ -92,6 +92,7 @@ namespace Booker.Controllers
                 foreach(var category in book.CategoriesList())
                     if(!categoriesList.Contains(category))
                         categoriesList.Add(category);
+            categoriesList.Sort();
 
             var bookGenreVM = new BookCategoryViewModel
             {
@@ -176,7 +177,7 @@ namespace Booker.Controllers
             {
                 return NotFound();
             }
-            List<Comments> comments = _context.Comments.ToList();
+            List<Comments> comments = _context.Comments.Where(c =>c.BookId.Equals(id)).ToList();
             comments.Reverse();
             return View(new BookCommentViewModel() { Book = book,Comments = comments });
         }
